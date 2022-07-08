@@ -16,7 +16,8 @@ Depends:
     Rcpp (>= 1.0.2),
     dplyr (>= 1.0.9),
     rpact (>= 3.3.0),
-    ggplot2 (>= 3.3.5)
+    ggplot2 (>= 3.3.5),
+    data.table (>= 1.14)
 Imports:
     parallel (>= 3.2)
 LinkingTo:
