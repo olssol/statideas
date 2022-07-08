@@ -22,7 +22,7 @@
 #' @importFrom flexsurv flexsurvreg
 #' @importFrom survival Surv survfit coxph survdiff
 #' @importFrom survminer ggsurvplot
-#' @importFrom rpact getDesignGroupSequential getDesignSet plot.TrialDesignSet
+#' @importFrom rpact getDesignGroupSequential getDesignSet plot
 #'
 #' @description Demonstrate statistics ideas and concepts through interactive
 #'     Shiny applications.
