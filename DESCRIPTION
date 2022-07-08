@@ -14,8 +14,8 @@ Depends:
     methods,
     R (>= 3.5.0),
     Rcpp (>= 1.0.2),
-    dplyr,
-    rpact
+    dplyr (>= 1.0.9),
+    rpact (>= 3.3.0)
 Imports:
     parallel (>= 3.2)
 LinkingTo:
