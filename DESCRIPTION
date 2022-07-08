@@ -17,7 +17,8 @@ Depends:
     dplyr (>= 1.0.9),
     rpact (>= 3.3.0),
     ggplot2 (>= 3.3.5),
-    data.table (>= 1.14)
+    data.table (>= 1.14),
+    tidyr (>= 1.1)
 Imports:
     parallel (>= 3.2)
 LinkingTo:
