@@ -19,9 +19,6 @@
 #'     slice_head
 #' @importFrom tidyr gather
 #' @importFrom data.table rbindlist
-#' @importFrom flexsurv flexsurvreg
-#' @importFrom survival Surv survfit coxph survdiff
-#' @importFrom survminer ggsurvplot
 #' @importFrom rpact getDesignGroupSequential getDesignSet
 #'
 #' @description Demonstrate statistics ideas and concepts through interactive
