@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Monitoring Boundaries for Group Sequential Designs</title>
+<meta name="author" content="By Statistical Innovation"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/serif.css" id="theme"/>
+
+<link rel="stylesheet" href="./presentation.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1 class="title">Monitoring Boundaries for Group Sequential Designs</h1><h2 class="author">By Statistical Innovation</h2><p class="date">Created: 2022-07-06 Wed 09:14</p>
+</section>
+<section>
+<section id="slide-org102f05d">
+<h2 id="org102f05d">An example</h2>
+<blockquote>
+<p>
+"This interim analysis will use the <i>O’Brien-Fleming</i> approach with <i>information
+fraction</i> 0.77 and <i>overall type-I error</i> controlled at 0.05, with an <i>alpha
+spending</i> at the interim analysis of <i>0.021</i>, and an alpha spending at the final
+analysis (when all 108 patients complete the study) of <i>0.043</i>"
+</p>
+</blockquote>
+</section>
+</section>
+<section>
+<section id="slide-org4c464bc">
+<h2 id="org4c464bc">Today's objectives</h2>
+<ul>
+<li>Why do we need monitoring boundaries?</li>
+<li>How do Pocock and O'Brien-Fleming boundaries work?</li>
+<li>How does alpha spending function work?</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orge28cc63">
+<h2 id="orge28cc63">An Example of RCT</h2>
+<ul>
+<li>Consider a randomized controlled trial with a continuous endpoint</li>
+<li>The <i>goal</i> is to show that the treatment is superior than the control</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgd95425d">
+<h2 id="orgd95425d">Group sequential test</h2>
+<ul>
+<li>A group sequential test monitors a <b>statistic</b> <i>summarizing the difference in
+primary responses between the treatment and control groups</i> at <span class="underline">a series of
+times</span> during the trial</li>
+<li>At interim analyses, if the value of this statistic exceeds some specified
+boundary, the trial is stopped and the null hypothesis is rejected</li>
+<li>Interim analyses the trial to be stopped early with a <i>valid conclusion</i>
+<ul>
+<li>Participants are not exposed to ineffective or unsafe treatments (ethical)</li>
+<li>Assumptions made at the design stage are checked (administrative)</li>
+<li>Sample size, time and cost are not wasted (economic)</li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org02f0feb">
+<h2 id="org02f0feb">Information fraction</h2>
+<ul>
+<li>Defined as the fraction of <i>total information</i> expected at the scheduled end of
+the trial</li>
+<li>Roughly, \(\mbox{IF} = {n_k \over N}\)</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org772be0c">
+<h2 id="org772be0c">Type I error inflation</h2>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">Number of Interim Analysis</th>
+<th scope="col" class="org-right">Type I error (for \(\alpha = 0.05\))</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">0.083</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-right">0.107</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-right">0.126</td>
+</tr>
+
+<tr>
+<td class="org-right">10</td>
+<td class="org-right">0.193</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section>
+<section id="slide-orgc7fadd7">
+<h2 id="orgc7fadd7">Boundaries</h2>
+<ul>
+<li>Pocock
+<ul>
+<li>Constant for all analyses: \(c(K)\)</li>
+<li>Narrower initially, easier to stop early</li>
+
+</ul></li>
+<li>O'Brien-Fleming
+<ul>
+<li>Narrower boundaries at later analysis (i.e., conservative initially): \(c(K) / \sqrt{k}\)</li>
+<li>Similar boundary at the final analysis to the fixed sample test</li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgcbbc2e6">
+<h2 id="orgcbbc2e6">Alpha?</h2>
+<ul>
+<li>Nominal significance level at the \(k\)th interim analysis
+<ul>
+<li>\(\alpha_k = \Pr(|Z_k| \geq c_k)\)</li>
+<li>Probability of rejecting the null hypothesis at the \(k\)th interim analysis</li>
+
+</ul></li>
+<li>The error spent at stage \(k\)
+<ul>
+<li>\(\pi_k = \Pr(|Z_1| < c_1, \ldots, |Z_k| \geq c_k)\)</li>
+<li>Probability of <i>not</i> rejecting \(H_0\) before the \(k\)th interim analysis
+<i>and</i> rejecting the null hypothesis at the \(k\)th interim analysis</li>
+
+</ul></li>
+<li>Cumulative alpha
+<ul>
+<li>\(\alpha = \pi_1 + \ldots + \pi_K\)</li>
+<li>\(\alpha \neq \pi_1 + \ldots + \pi_K\)</li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org6a6d84f">
+<h2 id="org6a6d84f">Alpha spending function</h2>
+<ul>
+<li>Any function can be an alpha spending function if the function satisfies
+<ul>
+<li>\(\alpha(0)=0\) (value equals \(0\) at the beginning of the study)</li>
+<li>\(\alpha(1)=\alpha\) (value equals \(alpha\) at the final analysis)</li>
+<li>Non-decreasing</li>
+
+</ul></li>
+<li>A more flexible group sequential procedure that <i>does not require the total
+number nor the exact time of the interim analyses to be specified in advance</i></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org299e81b">
+<h2 id="org299e81b">Reference</h2>
+<ul>
+<li>Pocock, Stuart J. "Group sequential methods in the design and analysis of
+clinical trials." Biometrika 64.2 (1977): 191-199.</li>
+<li>O'Brien, Peter C., and Thomas R. Fleming. "A multiple testing procedure for
+clinical trials." Biometrics (1979): 549-556.</li>
+<li>Jennison, Christopher, and Bruce W. Turnbull. Group sequential methods with
+applications to clinical trials. CRC Press, 1999.</li>
+<li>Meurer, William J., and Juliana Tolles. "Interim Analyses During Group
+Sequential Clinical Trials." JAMA 326.15 (2021): 1524-1525.</li>
+<li>Demets, David L., and KK Gordon Lan. "Interim analysis: the alpha spending
+function approach." Statistics in medicine 13.13‐14 (1994): 1341-1352.</li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/markdown/markdown.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: false,
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+overview: true,
+margin: 0.10,
+
+transition: 'convex',
+transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealMarkdown, RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>

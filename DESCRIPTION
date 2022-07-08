@@ -1,0 +1,34 @@
+Package: statidea
+Title: Statistics Ideas Through Interactive Apps
+Version: 1.0
+Authors@R:
+    person(given = "Chenguang",
+           family = "Wang",
+           role = c("aut", "cre"),
+           email = "chenguang.wang.0517@gmail.com")
+Maintainer: Chenguang Wang <chenguang.wang.0517@gmail.com>
+Description: Demonstrate statistics ideas and concepts through interactive Shiny
+     applications.
+License: GPL (>=3)
+Depends:
+    methods,
+    R (>= 3.5.0),
+    Rcpp (>= 1.0.2),
+    dplyr
+Imports:
+    parallel (>= 3.2)
+LinkingTo:
+    Rcpp (>= 1.0.2)
+RcppModules:
+Encoding: UTF-8
+LazyData: true
+NeedsCompilation: yes
+SystemRequirements: GNU make
+RoxygenNote: 7.1.2
+Suggests:
+    knitr,
+    shiny,
+    rmarkdown,
+    pander,
+    xtable
+VignetteBuilder: knitr
