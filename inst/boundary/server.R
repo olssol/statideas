@@ -23,7 +23,7 @@ shinyServer(function(input, output, session) {
     })
 
 
-    output$pltArm <- renderPlot({
+    output$pltArm <- renderPlotly({
         dta <- get_data_single()
         if (is.null(dta))
             return(NULL)
@@ -33,14 +33,16 @@ shinyServer(function(input, output, session) {
             type <- "y"
         }
 
-        si_bd_plt_single(dta,
-                         type     = type,
-                         ##n_first  = userLog$n_first,
-                         n_first  = input$inNfirst,
-                         ref_line = c(input$inTrtMean, 0))
+        rst <- si_bd_plt_single(dta,
+                                type     = type,
+                                ##n_first  = userLog$n_first,
+                                n_first  = input$inNfirst,
+                                ref_line = c(input$inTrtMean, 0))
+
+        ggplotly(rst)
     })
 
-    output$pltDiff <- renderPlot({
+    output$pltDiff <- renderPlotly({
         dta   <- get_data_single()
         if (is.null(dta))
             return(NULL)
@@ -59,12 +61,14 @@ shinyServer(function(input, output, session) {
                                pvalue = alpha)
         }
 
-        si_bd_plt_single(dta,
-                         type     = type,
-                         n_first  = input$inNfirst,
-                         ## n_first  = userLog$n_first,
-                         col      = "red",
-                         ref_line = ref_line)
+        rst <- si_bd_plt_single(dta,
+                                type     = type,
+                                n_first  = input$inNfirst,
+                                ## n_first  = userLog$n_first,
+                                col      = "red",
+                                ref_line = ref_line)
+
+        ggplotly(rst)
     })
 
     ##--------------------------------------
@@ -82,7 +86,7 @@ shinyServer(function(input, output, session) {
     })
 
     output$tblTest <- renderTable({
-        get_summary_rej()$rej
+        get_summary_rej()$rej_tbl
     }, digits = 4)
 
     output$pltAlpha <- renderPlot({

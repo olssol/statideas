@@ -19,7 +19,8 @@
 ##  contact : CWANG68@JHMI.EDU
 ##
 
-library(shinythemes);
+library(shinythemes)
+library(plotly)
 
 shinyUI(
     fluidPage(theme = shinytheme("cosmo"),

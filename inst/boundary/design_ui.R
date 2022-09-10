@@ -43,6 +43,9 @@ tab_demo_1 <- function() {
                         ## actionButton("btnAdd",
                         ##              "Enroll Patients",
                         ##              width = "120px"),
+                        numericInput("inSeed",
+                                     "Random Seed",
+                                     value = 0, min = 0),
                         actionButton("btnReset",
                                      "Reset",
                                      width = "120px")
@@ -60,8 +63,7 @@ tab_demo_1 <- function() {
                                      choices = c("Individual Value" = "y",
                                                  "Cumulative Mean"  = "mean" )
                                     ),
-                        plotOutput("pltArm",  height = "350px"),
-
+                        plotlyOutput("pltArm",  height = "350px"),
                         h4("By Difference Between Two Arms"),
                         radioButtons("rdoDiffOpt",
                                      "",
@@ -69,7 +71,7 @@ tab_demo_1 <- function() {
                                                  "Difference" = "difference",
                                                  "P Value" = "pvalue")
                                      ),
-                        plotOutput("pltDiff", height = "350px"),
+                        plotlyOutput("pltDiff", height = "350px"),
                         checkboxInput("chkThresh",
                                       "Show Rejection Threshold",
                                       value = FALSE)
@@ -211,7 +213,9 @@ get_data_single <- reactive({
     if (is.null(trt_mean) | is.null(n_tot))
         return(NULL)
 
-        rst <- si_bd_simu_trial(n_tot = n_tot, trt_mean = trt_mean)
+        rst <- si_bd_simu_trial(n_tot    = n_tot,
+                                trt_mean = trt_mean,
+                                seed     = input$inSeed)
         si_bd_ana_trial(rst)
 })
 
@@ -268,7 +272,8 @@ get_summary_rej <- reactive({
     if (is.null(dat_rej))
         return(NULL)
 
-    si_bd_sum_rep(dat_rej)
+    rst <- si_bd_sum_rep(dat_rej)
+    rst
 })
 
 get_sel <- reactive({

@@ -15,7 +15,12 @@
 #'
 si_bd_simu_trial <- function(n_tot = 200, rand_ratio = 1,
                              trt_mean = 0, ctl_mean = 0,
-                             trt_sd = 1, ctl_sd = 1, ...) {
+                             trt_sd = 1, ctl_sd = 1, ...,
+                             seed = 0) {
+
+    if (seed > 0) {
+        old_seed <- set.seed(seed)
+    }
 
     ntrt <- rbinom(1, n_tot, rand_ratio / (rand_ratio + 1))
 
@@ -26,6 +31,10 @@ si_bd_simu_trial <- function(n_tot = 200, rand_ratio = 1,
     ## outcome
     y_trt <- si_simu_cont(ntrt,         trt_mean, trt_sd)
     y_ctl <- si_simu_cont(n_tot - ntrt, ctl_mean, ctl_sd)
+
+    if (seed > 0) {
+        set.seed(old_seed)
+    }
 
     ## return
     dta_trt %>%
@@ -70,6 +79,7 @@ si_bd_ana_trial <- function(dat, y_sd = 1) {
         as.matrix()
 
     diff <- c_two_arm_diff(xx)
+
     dat %>%
         mutate(mean       = diff[, 6],
                difference = diff[, 3] / diff[, 2] - diff[, 5] / diff[, 4],
@@ -84,22 +94,26 @@ si_bd_ana_trial <- function(dat, y_sd = 1) {
 #' @export
 #'
 si_bd_gs_trial <- function(dat, bds = cbind(1, 1.96)) {
-    n        <- nrow(dat)
-    inx      <- ceiling(n * bds[, 1])
+    dat        <- data.frame(dat)
+    n          <- nrow(dat)
+    inx        <- ceiling(n * bds[, 1])
+    ind_test   <- as.numeric(dat[inx, "zscore"] >= bds[, 2])
+    difference <- as.numeric(dat[inx, "difference"])
 
-    ind_test <- as.numeric(dat[inx, "zscore"] >= bds[, 2])
-
-    inx_na   <- which(is.na(ind_test))
+    inx_na     <- which(is.na(ind_test))
     if (length(inx_na) > 0)
         ind_test[inx_na] <- FALSE
 
     cum_test <- cumsum(ind_test) > 0
 
     ## return
-    data.frame(interim_id  = seq_len(nrow(bds)),
-               interim     = bds[, 1],
-               significant = ind_test,
-               cumu_sig    = cum_test)
+    rst <- data.frame(interim_id  = seq_len(nrow(bds)),
+                      interim     = bds[, 1],
+                      significant = ind_test,
+                      cumu_sig    = cum_test,
+                      effect      = difference)
+
+    rst
 }
 
 #' GS Tests for all
@@ -297,6 +311,7 @@ si_bd_plt_alpha <- function(rej, alpha = 0.05) {
 #' @export
 #'
 si_bd_sum_rep <- function(dat_rej) {
+
     rst <- dat_rej$rej %>%
         filter(!is.na(significant)) %>%
         group_by(interim_id, interim) %>%
@@ -317,8 +332,24 @@ si_bd_sum_rep <- function(dat_rej) {
                                         "Cumulative Rejection")))
 
 
+    rst_est <- dat_rej$rej %>%
+        filter(1 == significant) %>%
+        group_by(interim_id) %>%
+        summarize(Treatment_Effect = mean(effect))
+
+
+    rej_tbl <- rst %>%
+        rename(Information_Fraction = interim,
+               Rej_Trials_N         = n_rejection,
+               Rej_trials_Rate      = prop_rejection,
+               Cumu_Rej_Trials_N    = n_cum_rej,
+               Cumu_Rej_Trials_Rate = prop_cum_rej) %>%
+        left_join(rst_est, by = "interim_id")
+
+
     list(rej_wide = rst,
-         rej      = rej)
+         rej      = rej,
+         rej_tbl  = rej_tbl)
 }
 
 #' Get Boundary

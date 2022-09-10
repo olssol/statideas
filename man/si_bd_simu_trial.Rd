@@ -11,7 +11,8 @@ si_bd_simu_trial(
   ctl_mean = 0,
   trt_sd = 1,
   ctl_sd = 1,
-  ...
+  ...,
+  seed = 0
 )
 }
 \description{

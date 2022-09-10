@@ -9,6 +9,3 @@
 Demonstrate statistics ideas and concepts through interactive
     Shiny applications.
 }
-\references{
-
-}
