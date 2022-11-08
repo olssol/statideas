@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <title>Monitoring Boundaries for Group Sequential Designs</title>
-<meta name="author" content="By Statistical Innovation"/>
 <style type="text/css">
 .underline { text-decoration: underline; }
 </style>
@@ -19,27 +18,86 @@
 <div class="reveal">
 <div class="slides">
 <section id="sec-title-slide">
-<h1 class="title">Monitoring Boundaries for Group Sequential Designs</h1><h2 class="author">By Statistical Innovation</h2><p class="date">Created: 2022-09-10 Sat 19:43</p>
+<h1 class="title">Monitoring Boundaries for Group Sequential Designs</h1><p class="date">Created: 2022-09-19 Mon 23:06</p>
 </section>
 <section>
-<section id="slide-org85aacbf">
-<h2 id="org85aacbf">Group sequential design and monitoring boundaries</h2>
-<div class="outline-text-2" id="text-org85aacbf">
+<section id="slide-orgab4b9b3">
+<h2 id="orgab4b9b3">An example</h2>
+<div class="outline-text-2" id="text-orgab4b9b3">
 </div>
 </section>
-<section id="slide-org14ca37c">
-<h3 id="org14ca37c">An example</h3>
-<blockquote>
-<p>
-"This interim analysis will use the <i>O’Brien-Fleming</i> approach with <i>information
-fraction</i> 0.77 and <i>overall type-I error</i> controlled at 0.05, with an <i>alpha
-spending</i> at the interim analysis of <i>0.021</i>, and an alpha spending at the final
-analysis (when all 108 patients complete the study) of <i>0.043</i>"
-</p>
-</blockquote>
+<section id="slide-org2b36793">
+<h3 id="org2b36793">Background</h3>
+<ul>
+<li><i>Modi S, Jacot W, Yamashita T, et al. Trastuzumab deruxtecan in previously
+treated HER2-low advanced breast cancer. N Engl J Med 2022;387:9-20.</i></li>
+<li>A Daiichi phase 3, multicenter, randomized, open-label, active-controlled
+trial of DS-8201a, an anti-HER2-antibody drug conjugate (ADC), versus
+treatment of physician’s choice for HER2-low, unresectable and/or metastatic
+breast cancer subjects</li>
+
+</ul>
 </section>
-<section id="slide-org815f34d">
-<h3 id="org815f34d">Objectives</h3>
+<section id="slide-org533d3aa">
+<h3 id="org533d3aa">Primary and secondary endpoints</h3>
+<ul>
+<li>Primary
+<ul>
+<li>PFS in HR+ subjects based on blinded independent central review (BICR)</li>
+
+</ul></li>
+<li>Secondary
+<ul>
+<li>PFS in HR+, based on Investigator assessment</li>
+<li>OS in HR+</li>
+<li>ORR in HR+</li>
+<li>DoR in HR+</li>
+<li>PFS, OS, ORR and DoR in all subjects</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-org25c4077">
+<h3 id="org25c4077">Interim analyses plan (i)</h3>
+<ul>
+<li>No interim analysis is planned for PFS</li>
+<li>Up to 3 analyses of OS are planned
+<ul>
+<li>First interim analysis at the time of the final analysis for PFS (provided
+PFS is significant), at which point a total of approximately 162 OS events
+(49% information fraction) in HR-positive subjects are expected</li>
+<li>If the first OS interim analysis is not significant, a second interim
+analysis for OS is planned when approximately 233 OS events (70% information
+fraction) in HR-positive subjects have been documented</li>
+<li>If the second OS interim analysis is not significant, a final analysis for
+OS after approximately 333 OS events in HR-positive subjects have been
+documented</li>
+
+</ul></li>
+<li>A group sequential design, utilizing 3-look <i>Lan-DeMets</i> alpha spending
+function with <i>O’Brien-Fleming</i> type stop boundary will be used to construct
+the efficacy stopping boundaries overall 2-sided significance level of 0.05</li>
+
+</ul>
+</section>
+<section id="slide-orgc95d117">
+<h3 id="orgc95d117">Interim analyses plan (ii)</h3>
+
+<div id="orgb23a08c" class="figure">
+<p><img src="Figures/case1_tb.png" alt="case1_tb.png" height="400px" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-org7a62f99">
+<h2 id="org7a62f99">Group sequential design and monitoring boundaries</h2>
+<div class="outline-text-2" id="text-org7a62f99">
+</div>
+</section>
+<section id="slide-orgee777aa">
+<h3 id="orgee777aa">Objectives</h3>
 <ul>
 <li>Why do we need monitoring boundaries?</li>
 <li>How do Pocock and O'Brien-Fleming boundaries work?</li>
@@ -47,16 +105,16 @@ analysis (when all 108 patients complete the study) of <i>0.043</i>"
 
 </ul>
 </section>
-<section id="slide-org13127a4">
-<h3 id="org13127a4">An Example of RCT</h3>
+<section id="slide-orgce9e234">
+<h3 id="orgce9e234">An Example of RCT</h3>
 <ul>
 <li>Consider a randomized controlled trial with a continuous endpoint</li>
 <li>The <i>goal</i> is to show that the treatment is superior than the control</li>
 
 </ul>
 </section>
-<section id="slide-orgccfb56f">
-<h3 id="orgccfb56f">Group sequential test</h3>
+<section id="slide-org7c3cf31">
+<h3 id="org7c3cf31">Group sequential test</h3>
 <ul>
 <li>A group sequential test monitors a <b>statistic</b> <i>summarizing the difference in
 primary responses between the treatment and control groups</i> at <span class="underline">a series of
@@ -73,8 +131,8 @@ boundary, the trial is stopped and the null hypothesis is rejected</li>
 
 </ul>
 </section>
-<section id="slide-orgc20fce4">
-<h3 id="orgc20fce4">A brief history of group sequential test</h3>
+<section id="slide-orgc31dd06">
+<h3 id="orgc31dd06">A brief history of group sequential test</h3>
 <ul>
 <li>In the 1920's, <i>group-sequential</i> designs were proposed for industrial
 acceptance sampling</li>
@@ -87,8 +145,8 @@ conservative stopping boundaries at the early stage of a study</li>
 
 </ul>
 </section>
-<section id="slide-org25dc87a">
-<h3 id="org25dc87a">Information fraction</h3>
+<section id="slide-org93df4dc">
+<h3 id="org93df4dc">Information fraction</h3>
 <ul>
 <li>Defined as the fraction of <i>total information</i> expected at the scheduled end of
 the trial</li>
@@ -99,8 +157,8 @@ subjects</li>
 
 </ul>
 </section>
-<section id="slide-org45cc59f">
-<h3 id="org45cc59f">Maturity</h3>
+<section id="slide-orge624e25">
+<h3 id="orge624e25">Maturity</h3>
 <ul>
 <li>No uniformly accepted definition of what <i>maturity</i> means</li>
 <li>Example
@@ -113,8 +171,8 @@ event</li>
 
 </ul>
 </section>
-<section id="slide-org4623bcb">
-<h3 id="org4623bcb">Type I error inflation</h3>
+<section id="slide-org3b66af0">
+<h3 id="org3b66af0">Type I error inflation</h3>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -152,8 +210,8 @@ event</li>
 </tbody>
 </table>
 </section>
-<section id="slide-orgb196343">
-<h3 id="orgb196343">Boundaries</h3>
+<section id="slide-org922c315">
+<h3 id="org922c315">Boundaries</h3>
 <ul>
 <li>Pocock
 <ul>
@@ -170,8 +228,8 @@ event</li>
 
 </ul>
 </section>
-<section id="slide-org9090397">
-<h3 id="org9090397">Alpha vs. cumulative alpha (i)</h3>
+<section id="slide-org5f956c9">
+<h3 id="org5f956c9">Alpha vs. cumulative alpha (i)</h3>
 <ul>
 <li>Nominal significance level at the \(k\)th interim analysis
 <ul>
@@ -195,8 +253,8 @@ event</li>
 
 </ul>
 </section>
-<section id="slide-orgd610c75">
-<h3 id="orgd610c75">Alpha vs. cumulative alpha (ii)</h3>
+<section id="slide-orgb16322d">
+<h3 id="orgb16322d">Alpha vs. cumulative alpha (ii)</h3>
 <ul>
 <li>Take a study with two interim analyses as an example</li>
 <li>OF boundary
@@ -259,10 +317,9 @@ Stage levels (one-sided) : 0.0002592, 0.0070554, 0.0225331
 </ul></li>
 
 </ul>
-
 </section>
-<section id="slide-orgbce5085">
-<h3 id="orgbce5085">Alpha spending function</h3>
+<section id="slide-org4e7baec">
+<h3 id="org4e7baec">Alpha spending function</h3>
 <ul>
 <li>Any function can be an alpha spending function if the function satisfies
 <ul>
@@ -276,8 +333,8 @@ number nor the exact time of the interim analyses to be specified in advance</i>
 
 </ul>
 </section>
-<section id="slide-orgff11e3e">
-<h3 id="orgff11e3e">Alpha spending function examples</h3>
+<section id="slide-orge71861a">
+<h3 id="orge71861a">Alpha spending function examples</h3>
 <ul>
 <li>Pocock-type spending function
 \[\alpha(t) = \alpha \log \{1 + (e-1)t\} \]</li>
@@ -286,8 +343,8 @@ number nor the exact time of the interim analyses to be specified in advance</i>
 
 </ul>
 </section>
-<section id="slide-orge1f8645">
-<h3 id="orge1f8645">Reference</h3>
+<section id="slide-org181061e">
+<h3 id="org181061e">Reference</h3>
 <ul>
 <li>Pocock, Stuart J. "Group sequential methods in the design and analysis of
 clinical trials." Biometrika 64.2 (1977): 191-199.</li>
@@ -304,83 +361,13 @@ function approach." Statistics in medicine 13.13‐14 (1994): 1341-1352.</li>
 </section>
 </section>
 <section>
-<section id="slide-org9f0ad8c">
-<h2 id="org9f0ad8c">Case study I</h2>
-<div class="outline-text-2" id="text-org9f0ad8c">
+<section id="slide-org11f3be7">
+<h2 id="org11f3be7">Case study II</h2>
+<div class="outline-text-2" id="text-org11f3be7">
 </div>
 </section>
-<section id="slide-org7cdb2f2">
-<h3 id="org7cdb2f2">Background</h3>
-<ul>
-<li><i>Modi S, Jacot W, Yamashita T, et al. Trastuzumab deruxtecan in previously
-treated HER2-low advanced breast cancer. N Engl J Med 2022;387:9-20.</i></li>
-<li>A Daiichi phase 3, multicenter, randomized, open-label, active-controlled
-trial of DS-8201a, an anti-HER2-antibody drug conjugate (ADC), versus
-treatment of physician’s choice for HER2-low, unresectable and/or metastatic
-breast cancer subjects</li>
-
-</ul>
-</section>
-<section id="slide-org101f874">
-<h3 id="org101f874">Primary and secondary endpoints</h3>
-<ul>
-<li>Primary
-<ul>
-<li>PFS in HR+ subjects based on blinded independent central review (BICR)</li>
-
-</ul></li>
-<li>Secondary
-<ul>
-<li>PFS in HR+, based on Investigator assessment</li>
-<li>OS in HR+</li>
-<li>ORR in HR+</li>
-<li>DoR in HR+</li>
-<li>PFS, OS, ORR and DoR in all subjects</li>
-
-</ul></li>
-
-</ul>
-</section>
-<section id="slide-org3bea381">
-<h3 id="org3bea381">Interim analyses plan (i)</h3>
-<ul>
-<li>No interim analysis is planned for PFS</li>
-<li>Up to 3 analyses of OS are planned
-<ul>
-<li>First interim analysis at the time of the final analysis for PFS (provided
-PFS is significant), at which point a total of approximately 162 OS events
-(49% information fraction) in HR-positive subjects are expected</li>
-<li>If the first OS interim analysis is not significant, a second interim
-analysis for OS is planned when approximately 233 OS events (70% information
-fraction) in HR-positive subjects have been documented</li>
-<li>If the second OS interim analysis is not significant, a final analysis for
-OS after approximately 333 OS events in HR-positive subjects have been
-documented</li>
-
-</ul></li>
-<li>A group sequential design, utilizing 3-look <i>Lan-DeMets</i> alpha spending
-function with <i>O’Brien-Fleming</i> type stop boundary will be used to construct
-the efficacy stopping boundaries overall 2-sided significance level of 0.05</li>
-
-</ul>
-</section>
-<section id="slide-orgfa4e369">
-<h3 id="orgfa4e369">Interim analyses plan (ii)</h3>
-
-<div id="org8ee57d2" class="figure">
-<p><img src="Figures/case1_tb.png" alt="case1_tb.png" height="400px" />
-</p>
-</div>
-</section>
-</section>
-<section>
-<section id="slide-orgaf9958d">
-<h2 id="orgaf9958d">Case study II</h2>
-<div class="outline-text-2" id="text-orgaf9958d">
-</div>
-</section>
-<section id="slide-org3203b38">
-<h3 id="org3203b38">Background</h3>
+<section id="slide-org7cbd201">
+<h3 id="org7cbd201">Background</h3>
 <ul>
 <li><i>Cortés J, Kim S-B, Chung W-P, et al. Trastuzumab deruxtecan versus
 trastuzumab emtansine for breast cancer. N Engl J Med 2022;386:1143-54.</i></li>
@@ -392,8 +379,8 @@ taxane</li>
 
 </ul>
 </section>
-<section id="slide-orgc9e492a">
-<h3 id="orgc9e492a">Primary and secondary endpoints</h3>
+<section id="slide-orge78362d">
+<h3 id="orge78362d">Primary and secondary endpoints</h3>
 <ul>
 <li>Primary
 <ul>
@@ -411,8 +398,8 @@ taxane</li>
 
 </ul>
 </section>
-<section id="slide-orga16d46c">
-<h3 id="orga16d46c">Interim analysis plan (i)</h3>
+<section id="slide-org7b73d6b">
+<h3 id="org7b73d6b">Interim analysis plan (i)</h3>
 <ul>
 <li>An interim analysis of PFS for superiority is planned after approximately 234
 PFS events per BICR (70% of target total of 335) have been documented</li>
@@ -422,8 +409,8 @@ will be used to construct the efficacy stopping boundaries with an overall
 
 </ul>
 </section>
-<section id="slide-orgf0c73ff">
-<h3 id="orgf0c73ff">Interim analysis plan (ii)</h3>
+<section id="slide-org0f10b27">
+<h3 id="org0f10b27">Interim analysis plan (ii)</h3>
 <ul>
 <li>Up to two interim analyses and a final analysis of OS are planned, provided
 PFS is statistically significant</li>
@@ -437,23 +424,23 @@ stopping boundaries with an overall 2-sided significance level of 0.05</li>
 
 </ul>
 </section>
-<section id="slide-org24c042c">
-<h3 id="org24c042c">Interim analysis plan (iii)</h3>
+<section id="slide-org4c6cddb">
+<h3 id="org4c6cddb">Interim analysis plan (iii)</h3>
 
-<div id="org68e4fad" class="figure">
+<div id="orgd638be5" class="figure">
 <p><img src="Figures/case2_tb.png" alt="case2_tb.png" height="500px" />
 </p>
 </div>
 </section>
 </section>
 <section>
-<section id="slide-org6183ba5">
-<h2 id="org6183ba5">Case study III</h2>
-<div class="outline-text-2" id="text-org6183ba5">
+<section id="slide-org187739a">
+<h2 id="org187739a">Case study III</h2>
+<div class="outline-text-2" id="text-org187739a">
 </div>
 </section>
-<section id="slide-orgb41b520">
-<h3 id="orgb41b520">Background</h3>
+<section id="slide-org9ad5a08">
+<h3 id="org9ad5a08">Background</h3>
 <ul>
 <li><i>Wu Y-L, Tsuboi M, He J, et al. Osimertinib in resected EGFR-mutated
 non–small-cell lung cancer. N Engl J Med 2020;383:1711-23</i></li>
@@ -465,8 +452,8 @@ following complete tumour resection with or without adjuvant chemotherapy
 
 </ul>
 </section>
-<section id="slide-orgf933cac">
-<h3 id="orgf933cac">Primary and secondary endpoint</h3>
+<section id="slide-orgc1491e6">
+<h3 id="orgc1491e6">Primary and secondary endpoint</h3>
 <ul>
 <li>Primary
 <ul>
@@ -483,8 +470,8 @@ following complete tumour resection with or without adjuvant chemotherapy
 
 </ul>
 </section>
-<section id="slide-orgf4ded3e">
-<h3 id="orgf4ded3e">Interim analysis plan (i)</h3>
+<section id="slide-orgf26f224">
+<h3 id="orgf26f224">Interim analysis plan (i)</h3>
 <ul>
 <li>The primary analysis was planned to be conducted when approximately 247 DFS
 events were observed in the stage II/IIIA population</li>
@@ -497,8 +484,8 @@ trial be unblinded at a trial level early to complete primary reporting</li>
 
 </ul>
 </section>
-<section id="slide-org80ac88d">
-<h3 id="org80ac88d">Interim analysis plan (ii)</h3>
+<section id="slide-org8900c34">
+<h3 id="org8900c34">Interim analysis plan (ii)</h3>
 <ul>
 <li>Two <b>unplanned interim analysis</b> of DFS in the stage II/IIIA population were
 conducted at the time of observing 86 DFS events and 156 DFS events
@@ -510,23 +497,23 @@ function will be used to maintain an overall 2-sided 5% type I error</li>
 
 </ul>
 </section>
-<section id="slide-orgcb356ae">
-<h3 id="orgcb356ae">Interim analysis plan (iii)</h3>
+<section id="slide-orgc547d20">
+<h3 id="orgc547d20">Interim analysis plan (iii)</h3>
 
-<div id="org21a34ba" class="figure">
+<div id="org29ae71f" class="figure">
 <p><img src="Figures/case3_tb.png" alt="case3_tb.png" height="400px" />
 </p>
 </div>
 </section>
 </section>
 <section>
-<section id="slide-org07434d5">
-<h2 id="org07434d5">Potential limitations</h2>
-<div class="outline-text-2" id="text-org07434d5">
+<section id="slide-org55cba63">
+<h2 id="org55cba63">Potential limitations</h2>
+<div class="outline-text-2" id="text-org55cba63">
 </div>
 </section>
-<section id="slide-orgbce7c0e">
-<h3 id="orgbce7c0e">Overestimation of the effect size</h3>
+<section id="slide-org638f8b9">
+<h3 id="org638f8b9">Overestimation of the effect size</h3>
 <ul>
 <li>A trial terminated early for benefit will tend to overestimate the treatment
 effect</li>
@@ -543,8 +530,8 @@ Trials. Clinical Cancer Research 18.18 (2012)</i></li>
 
 </ul>
 </section>
-<section id="slide-orgc7acf05">
-<h3 id="orgc7acf05">Clinical relevance (i)</h3>
+<section id="slide-org2da8efd">
+<h3 id="org2da8efd">Clinical relevance (i)</h3>
 <ul>
 <li><i>Oncologic Drugs Advisory Committee (ODAC) Meeting, February 9, 2021. BLA
 125514 Supplement-089</i></li>
@@ -567,8 +554,8 @@ event-free survival (EFS)</li>
 
 </ul>
 </section>
-<section id="slide-orgd1f882a">
-<h3 id="orgd1f882a">Clinical relevance (ii)</h3>
+<section id="slide-org961934c">
+<h3 id="org961934c">Clinical relevance (ii)</h3>
 <ul>
 <li>The FDA's position
 <ul>
@@ -584,21 +571,6 @@ between treatment arms since this estimate includes all patients who were
 randomized</li>
 
 </ul></li>
-
-</ul>
-</section>
-</section>
-<section>
-<section id="slide-org850e125">
-<h2 id="org850e125">Next sessions</h2>
-<div class="outline-text-2" id="text-org850e125">
-</div>
-</section>
-<section id="slide-orge446ff3">
-<h3 id="orge446ff3">Options</h3>
-<ul>
-<li>Survival analysis</li>
-<li>Demystifying BDM programming</li>
 
 </ul>
 </section>

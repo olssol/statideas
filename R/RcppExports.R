@@ -9,3 +9,43 @@ c_two_arm_diff <- function(dat) {
     .Call(`_statidea_c_two_arm_diff`, dat)
 }
 
+#' Multiple testing following the graph
+#'
+#'
+#' @param p_values  vector of p-values for the elementary hypothesis
+#' @param log       TRUE: print log at each step; FALSE: silent
+#'
+#' @inheritParams c_mtp
+#'
+#' @return Hypothesis rejection status indicator vector
+#'
+#' @export
+c_mtp_single <- function(p_values, alphas, mat_g, log = FALSE) {
+    .Call(`_statidea_c_mtp_single`, p_values, alphas, mat_g, log)
+}
+
+#' Multiple testing following the graph
+#'
+#' @param alphas    vector of the original alphas
+#' @param mat_g     transition matrix G
+#'
+#' @param p_values  matrix of p-values for the elementary hypothesis
+#'
+#' @return Hypothesis rejection status indicator vector
+#'
+#' @export
+c_mtp <- function(p_values, alphas, mat_g) {
+    .Call(`_statidea_c_mtp`, p_values, alphas, mat_g)
+}
+
+#' A single step in the multiple testing following the graph
+#'
+#'
+#'
+#' @return
+#'
+#' @export
+c_mtp_step <- function(mat_g, weights, h_ind, p_values, alpha) {
+    .Call(`_statidea_c_mtp_step`, mat_g, weights, h_ind, p_values, alpha)
+}
+

@@ -1,0 +1,51 @@
+
+<div class="content">
+
+<p>
+Let \(\lambda\) be the hazard rate. By definition, \[ \lambda = \lim_{\delta
+   \rightarrow 0} {P(T < t + \delta | T \geq t ) \over \delta} = \lim_{\delta
+   \rightarrow 0} {F(t + \delta) - F(t) \over S(t) \delta} = {f(t) \over S(t)}
+   = - {d \log S(t) \over dt}. \]
+Thus,
+ \[S(t) = e^{-\lambda t}.\]
+</p>
+
+<p>
+Let \(r\) be the incidence rate, defined as
+\[\mbox{Incidence Rate} =
+    {\mbox{# new cases during observation} \over \mbox{total person time of
+   observation while at rrisk during study}}.\] Following the definition, the
+incidence rate \(r\) (in \(z\) unit time) that corresponds to hazard rate
+\(\lambda\) is thus \[ r = { P(T \leq z) \over P(T \leq z)E(T | T \leq z) +
+   zP(T>z)}. \]
+</p>
+
+<p>
+Here, we want to show that how \(r\) is related to \(\lambda\).
+</p>
+
+<p>
+Let \(T \sim \mbox{Exp}(\lambda)\). Then, \(f(t) = \lambda e^{-\lambda t}\) and
+\(E(T) = 1/\lambda\).
+</p>
+
+<p>
+    First, \(P(T \leq z) = 1 - e^{-\lambda z}\). Second, \[ f(t| t \leq z) = {
+    \lambda e^{-\lambda t} \over 1 - e^{-\lambda z}}, \quad 0 \leq t \leq z\]
+    and
+</p>
+\begin{align*}
+E(T|T\leq z) &= \int_0^z t f(t|t \leq z) dt \\
+&=  {1 \over 1 - e^{-\lambda z}} \int_0^z t \lambda e^{\lambda t} dt \\
+&= {1 \over 1 - e^{-\lambda z}} \times - {1 \over \lambda}
+\times \left[ e^{-u} + ue^{-u}  \right]_0^{\lambda z} \\
+&= {1 \over 1 - e^{-\lambda z}} \times  {1 \over \lambda}
+\times (1 - e^{-\lambda z} - \lambda z e^{-\lambda z}).
+\end{align*}
+
+<p>
+    Thus, \[r = {1 - e^{-\lambda z} \over {1 \over \lambda} (1 - e^{-\lambda z
+    } - \lambda z e^{-\lambda z}) + z e^{-\lambda z}} = \lambda.\]
+</p>
+
+</div>
