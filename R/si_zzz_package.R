@@ -8,6 +8,7 @@
 #' @import methods
 #' @import stats
 #' @import ggplot2
+#' @import Rcpp
 #'
 #' @importFrom grDevices colors
 #' @importFrom graphics axis box legend lines par plot points text arrows grid
@@ -20,6 +21,7 @@
 #' @importFrom tidyr gather
 #' @importFrom data.table rbindlist
 #' @importFrom rpact getDesignGroupSequential getDesignSet
+#' @importFrom rstan sampling
 #'
 #' @description Demonstrate statistics ideas and concepts through interactive
 #'     Shiny applications.
