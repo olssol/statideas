@@ -15,7 +15,7 @@ Depends:
     R (>= 3.5.0),
     Rcpp (>= 1.0.2),
     dplyr (>= 1.0),
-    rpact (>= 3.3.0),
+    rpact (>= 3.2),
     ggplot2 (>= 3.3.5),
     data.table (>= 1.14),
     tidyr (>= 1.1)
