@@ -79,3 +79,12 @@ code {
 .figure-number {
     display: none;
 }
+
+li {
+    margin: 12px;
+    border-radius: 10px;
+}
+
+body {
+    border: 1px solid #000;
+}

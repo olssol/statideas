@@ -26,14 +26,12 @@ get_bayes_txt <- function(pos_ab, cred_level, quants) {
                         pos_ab[1], pos_ab[2])
     qs       <- qbeta(quants, pos_ab[1], pos_ab[2])
     qs       <- round(qs, 2)
-
-
-    txt <- sprintf("<p>The posterior mean response rate is <b>%5.2f</b>
+    txt      <- sprintf("<p>The posterior mean response rate is <b>%5.2f</b>
                     with <b>%5.0f%%</b> credible interval <b>(%5.2f, %5.2f)</b>. </p>
                     <p>The %s percent quantiles are <b> %s </b>, respectively.</p>",
-                   post_mu, cred_level * 100, cred_int[1], cred_int[2],
-                   paste(quants * 100, collapse = ","),
-                   paste(qs, collapse = ","))
+                    post_mu, cred_level * 100, cred_int[1], cred_int[2],
+                    paste(quants * 100, collapse = ","),
+                    paste(qs, collapse = ","))
 
     txt
 }
@@ -106,7 +104,7 @@ tab_basic <- function() {
                             numericInput(
                                 "inObsY",
                                 "Number of Responders",
-                                value = 15, min = 0, step = 5),
+                                value = 6, min = 0, step = 1),
                             numericInput(
                                 "inObsN",
                                 "Total Number of Patients",
