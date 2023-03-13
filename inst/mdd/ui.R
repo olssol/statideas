@@ -4,7 +4,7 @@ shinyUI(
     fluidPage(theme = shinytheme("cosmo"),
               ## includeScript('www/tools.js'),
               ##css
-              tags$head(tags$title("Bayesian"),
+              tags$head(tags$title("MDD"),
                         tags$link(rel = "stylesheet", type = "text/css",
                                   href = "styles.css"),
                         tags$link(rel = "stylesheet", type = "text/css",
@@ -18,7 +18,7 @@ shinyUI(
               ##title box
               withTags({
                   div(class="cheader",
-                      "Minimum Detectable Difference",
+                      "Understand Minimum Detectable Difference",
                       tags$button(
                                id = 'close',
                                type = "button",

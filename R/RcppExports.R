@@ -45,7 +45,7 @@ c_mtp <- function(p_values, alphas, mat_g) {
 #' @return
 #'
 #' @export
+#'
 c_mtp_step <- function(mat_g, weights, h_ind, p_values, alpha) {
     .Call(`_statidea_c_mtp_step`, mat_g, weights, h_ind, p_values, alpha)
 }
-
