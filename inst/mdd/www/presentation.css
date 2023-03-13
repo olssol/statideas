@@ -1,0 +1,90 @@
+.reveal {
+    font-size: 22px;
+}
+
+i {
+    color: #CC0000;
+}
+
+.reveal h1 {
+    font-size: 1.7em;
+}
+
+.reveal h2 {
+    color: #6404f5;
+    font-size: 1.3em;
+    /*text-transform: capitalize;*/
+}
+
+.reveal h3 {
+    /*text-transform: capitalize;*/
+    color: #336600;
+    font-size: 1.1em;
+}
+
+.reveal .progress {
+    height: 15px;
+    color: rgb(43,194,83);
+}
+
+.reveal .org-src-container {
+    font-size: 1.2em;
+}
+
+.reveal table {
+    border: 2px solid; /* No more visible border */
+}
+
+.reveal td {
+    border: 2px solid; /* No more visible border */
+    height: 40px;
+    transition: all 0.2s;  /* Simple transition for hover effect */
+}
+
+.reveal a {
+    color: #148A7D;
+}
+
+.MathJax {
+    color: #6404f5;
+    font-size: 80%;
+}
+
+.reveal blockquote {
+    border-left: 5px solid #ccc;
+    quotes: "\201C""\201D""\2018""\2019";
+}
+
+.slide-header {
+    position: fixed;
+    bottom:0;
+}
+
+#sec-title-slide h1 {
+    font-size: 2.3em;
+}
+
+#sec-title-slide h2 {
+    font-size: 0.9em;
+}
+
+#sec-title-slide p {
+    display: none;
+}
+
+code {
+    font-size:60%;
+}
+
+.figure-number {
+    display: none;
+}
+
+li {
+    margin: 12px;
+    border-radius: 10px;
+}
+
+body {
+    border: 1px solid #000;
+}

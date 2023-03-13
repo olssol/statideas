@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>An Introduction to Bayesian Design</title>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/serif.css" id="theme"/>
+
+<link rel="stylesheet" href="./presentation.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1 class="title">An Introduction to Bayesian Design</h1><p class="date">Created: 2023-02-15 Wed 10:37</p>
+</section>
+<section>
+<section id="slide-orgd10b42f">
+<h2 id="orgd10b42f">Basic Concepts</h2>
+<div class="outline-text-2" id="text-orgd10b42f">
+</div>
+</section>
+<section id="slide-orge436e97">
+<h3 id="orge436e97">Bayes' Rule (or Bayes' Theorem)</h3>
+
+<div id="org40f8f61" class="figure">
+<p><img src="./Figures/Bayesian/Bayesian.png" alt="Bayesian.png" height="400px" />
+</p>
+</div>
+
+<p>
+\[P(A|B) = {P(A \cap B) \over P(B)} = {P(B|A) P(A) \over P(B)}\]
+</p>
+</section>
+<section id="slide-org178b077">
+<h3 id="org178b077">The Bayesian Approach</h3>
+<div>
+\begin{array}{ccccc}
+P(A|B) & \propto & P(B|A) & \times & P(A) \\
+\Downarrow &     & \Downarrow &    & \Downarrow \\
+\underline{\pi(\theta | \mbox{Data})} & \propto &
+\underline{L(\mbox{Data}| \theta)}  & \times & \underline{\pi_0(\theta)}\\
+\Uparrow &     & \Uparrow &    & \Uparrow \\
+\mbox{posterior knowledge} & \propto & \mbox{information in data} & \times & \mbox{prior knowledge}\\
+\end{array}
+
+</div>
+</section>
+<section id="slide-orga905cda">
+<h3 id="orga905cda">Features of Bayesian Approach</h3>
+<ul>
+<li>Offers a flexible platform for <i>incorporating prior knowledge</i>
+<ul>
+<li>Follows learning paradigm</li>
+
+</ul></li>
+<li>Expresses the magnitude and variability of a quantity of interest using <i>the
+entire distribution</i> rather than a point estimate or confidence interval
+<ul>
+<li>Inference is straightforward with the distribution</li>
+<li>E.g., point estimation, interval estimation, hypothesis testing, model
+selection, prediction</li>
+
+</ul></li>
+<li>Foundation for decision making in the presence of uncertainty</li>
+<li>Enables highly <i>complex and flexible clinical trial designs</i>
+<ul>
+<li>E.g., adaptive designs, flexible interim monitoring, leveraging historical
+or real-world data, population pharmacokinetics and pharmacodynamics, etc.</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-org075fea9">
+<h3 id="org075fea9">Prior and Prior Elicitation</h3>
+<div class="outline-text-3" id="text-org075fea9">
+</div>
+<ul class="org-ul">
+<li><a id="orgb7b7bc7"></a>Prior Knowledge<br />
+<ul>
+<li>Sources
+<ul>
+<li>Previous study(ies)</li>
+<li>Expert opinion and/or literature-based estimates</li>
+
+</ul></li>
+<li>Goal is not to find the "perfect" knowledge
+<ul>
+<li>The goal is to incorporate salient features of available scientific knowledge
+into the data analysis</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section>
+</li>
+<li><a id="org3616c3a"></a>Prior Elicitation<br />
+<ul>
+<li>Often difficult for experts to provide direct information on parameters of
+statistical models
+<ul>
+<li>Model parameterization may be unfamiliar</li>
+<li>Scale of effect in statistical model may be awkward</li>
+<li>e.g., \(\theta \sim \mbox{Beta}(a, b)\)</li>
+
+</ul></li>
+<li>In such cases, we elicit information about quantities that are more familiar
+to the expert and use that information to induce a prior on the model
+parameters
+<ul>
+<li>Could give a best guess and, perhaps, a wide probability interval for the
+quantity of interest</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section>
+</li>
+<li><a id="orgd372b73"></a>Prior elicitation example<br />
+<ul>
+<li>Suppose weight loss for a randomly selected individual under a particular
+treatment can be modeled as \(N(\mu, \sigma^2)\)</li>
+<li>How would we place a prior on \(\sigma\)?</li>
+<li>Since \(\sigma\) is not easy to think about, we could ask questions
+about the <i>lower quartile of weight losses</i></li>
+<li>This number has 75% of the values above it and 25% below</li>
+<li>Lower quartile of a normal distribution is \(\mu − 0.675\sigma\)</li>
+<li>If expert’s experience suggests that lower quartile is \(\approx −5\) and
+that \(\mu \approx −2\), then a natural guess for \(\sigma\) is
+\[\sigma_0 = (−2 + 5)/0.675 = 4.44\]</li>
+<li>For \(\sigma^2\), could pick a distribution with median or mode equal to the
+best guess, \((4.44)^2\), that is <i>suitably diffuse</i></li>
+
+</ul>
+</section>
+<section>
+</li>
+<li><a id="org390af8e"></a>Sensitivity Analysis<br />
+<ul>
+<li>Need to examine whether other reasonable prior distributions lead to
+qualitatively similar posterior conclusions</li>
+<li>Start with an expert knowledge-based prior (if available) and consider
+plausible alternatives to it</li>
+<li>Applying Bayesian inferential tools, obtain posterior inferences based on each
+prior (expert and alternative) to see affect the choice of prior has on final
+inferences</li>
+<li>Ideal situation is when there is minimal impact</li>
+<li>Report in any analysis when inferences are sensitive to the choice of prior</li>
+
+</ul>
+</li>
+</ul>
+</section>
+<section id="slide-org36c4511">
+<h3 id="org36c4511">Bayesian Hierarchical Models</h3>
+<div class="outline-text-3" id="text-org36c4511">
+</div>
+<ul class="org-ul">
+<li><a id="org8740082"></a>What if two studies are conducted at the same time?<br />
+<div id="org3553cec" class="figure">
+<p><img src="./Figures/Bayesian/bhm.png" alt="bhm.png" height="450px" />
+</p>
+</div>
+
+</section>
+<section>
+</li>
+<li><a id="org82bab48"></a>How to combine information?<br />
+<ul>
+<li>Want to account for
+<ul>
+<li>Between-study differences and</li>
+<li>Within-study heterogeneity</li>
+
+</ul></li>
+<li>The Bayesian hierarchical model is both natural and flexible for combining
+information</li>
+
+</ul>
+
+
+<div id="org0bf4b5e" class="figure">
+<p><img src="./Figures/Bayesian/bhm_2.png" alt="bhm_2.png" height="350px" />
+</p>
+</div>
+</li>
+</ul>
+</section>
+<section id="slide-org6253e1e">
+<h3 id="org6253e1e">Bayesian or Frequentist?</h3>
+<ul>
+<li>Frequentist conditions on hypotheses
+<ul>
+<li>Assuming that the null hypothesis is true, how likely are data we observed
+or any unobserved data that are farther from the null hypothesis?</li>
+
+</ul></li>
+<li>Bayesian conditions on data
+<ul>
+<li>What do we know about the parameters of interest given the data?</li>
+<li>Given what we observed, how likely is it that the null hypothesis is true?</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section>
+<ul>
+<li>Why do we still need frequentist methods in clinical trials?
+<ul>
+<li>Frequentism is particularly well-suited to the role of regulators</li>
+<li>They emphasize procedures that perform well <i>in the long run</i></li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-orge780d85">
+<h3 id="orge780d85">Demonstrations</h3>
+<ul>
+<li>Consider a phase II single-arm cancer study with a sample size of 20 and 15
+responders. What is the response rate?</li>
+<li>What if there are three concurrent similar phase II single-arm cancer studies?
+Can they learn from one another?</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org0159f03">
+<h2 id="org0159f03">Bayesian Designs</h2>
+<div class="outline-text-2" id="text-org0159f03">
+</div>
+</section>
+<section id="slide-org66761ee">
+<h3 id="org66761ee">Bayesian Clinical Trial Designs</h3>
+<ul>
+<li>"Truly" Bayes
+<ul>
+<li>Make inferential decisions to maximize expected utility</li>
+<li>E.g., Bayesian <i>optimal designs</i> which choose design parameters to minimize
+the lost or maximize the gain <i>conditioning on prior knowledge</i></li>
+
+</ul></li>
+<li>Calibrated Bayes
+<ul>
+<li>Uses Bayesian approaches for modeling the study data</li>
+<li>Adjusts design parameters to achieve <i>desirable frequentist operating
+characteristics</i> (e.g., type I and II error)</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-org32ad9b9">
+<h3 id="org32ad9b9">Bayesian Designs</h3>
+<div class="outline-text-3" id="text-org32ad9b9">
+</div>
+<ul class="org-ul">
+<li><a id="orgbc3b4d7"></a>Phase I studies<br />
+<ul>
+<li>Continue reassessment method</li>
+<li>Escalation with overdose control</li>
+<li>BOIN design</li>
+<li>Joint model for efficacy and toxicity</li>
+
+</ul>
+</li>
+<li><a id="org4ce6078"></a>Phase II studies<br />
+<ul>
+<li>Bayesian continuous monitoring</li>
+<li>Adaptive randomization and dose allocation</li>
+<li>Hierarchical models</li>
+
+</ul>
+</li>
+<li><a id="org8f4d946"></a>Phase III studies<br />
+<ul>
+<li>Phase II/III seamless trials</li>
+<li>Adaptive sample size</li>
+<li>Futility analyses using predictive probabilities</li>
+
+</ul>
+</li>
+</ul>
+</section>
+<section id="slide-org53c7a5c">
+<h3 id="org53c7a5c">Case Study I</h3>
+<ul>
+<li>There are already existing studies from which we can draw informed priors for
+designing a new study</li>
+<li>However, we are uncertain that the new study will be similar enough to the
+existing studies</li>
+<li>Even if they are the same, we don't want the prior knowledge to dominate the
+new study</li>
+
+</ul>
+</section>
+<section>
+<ul>
+<li>Bayesian solution
+<ul>
+<li>Consider a robust prior which is a mixture of informative
+and non-information priors</li>
+<li>Let \(\alpha\) be the response rate</li>
+<li>A robust prior for \(\alpha\) can be constructed as
+\[\pi_0(\alpha) = 0.7 Beta(1,1) + 0.3 Beta(45, 15),\]
+where \(Beta(15, 45)\) is from an existing study</li>
+<li>The mixture prior serves as a prior that discounts the existing knowledge</li>
+<li>The mixing weights \(0.7\) and \(0.3\) are design parameters that will need to
+be elicited from experts</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-org3f30135">
+<h3 id="org3f30135">Case Study II</h3>
+<ul>
+<li>Consider a study with arms
+<ul>
+<li>A: Control</li>
+<li>B: Chemo + Cemi (High Dose)</li>
+<li>C: Chemo + Cemi (Low Dose)</li>
+
+</ul></li>
+<li>We will not have sufficient data to conclude if Arm B is superior to
+Arm C by frequentist hypothesis testing</li>
+<li>We would like to select one arm from Arms B and C as early as we can</li>
+<li>It will be efficient if we can share information between Arms B and C since
+they are similar</li>
+
+</ul>
+</section>
+<section>
+<ul>
+<li>Bayesian solution
+<ul>
+<li>Let \(\alpha_B\) and \(\alpha_C\) be the response rate for arms B and C,
+respectively</li>
+<li>Model \(\alpha_B\) and \(\alpha_C\) jointly to allow information sharing between
+Arms B and C</li>
+<li>Assign a prior to \((\alpha_B, \alpha_C)\) such that
+<ul>
+<li>\(\alpha_C \sim \pi_0(\alpha)\)</li>
+<li>\(\alpha_B|\alpha_C\) has mean \(\alpha_C\) with some variance</li>
+
+</ul></li>
+<li>Update the posterior distributions of \(\alpha_B\) and
+\(\alpha_C\) after every cohort of, say \(5\) patients</li>
+<li>Drop arm \(C\) if \(P(\alpha_B > \alpha_C | \mbox{data}) > 0.6\)</li>
+<li>Drop arm \(B\) if \(P(\alpha_C > \alpha_B | \mbox{data}) > 0.6\)</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-org46d49cc">
+<h3 id="org46d49cc">Special Complex Design Cases</h3>
+<div class="outline-text-3" id="text-org46d49cc">
+</div>
+<ul class="org-ul">
+<li><a id="org76028ba"></a>Leveraging Real-World Data and Real-World Evidence<br />
+<div id="org273bced" class="figure">
+<p><img src="./Figures/Bayesian/bayes_rwd.png" alt="bayes_rwd.png" height="500px" />
+</p>
+</div>
+</section>
+<section>
+</li>
+<li><a id="org49a5c26"></a>Bayesian Umbrella, Bucket and Platform Trials<br />
+<div id="org382b0ad" class="figure">
+<p><img src="./Figures/Bayesian/bucket.png" alt="bucket.png" height="500px" />
+</p>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgb38d119">
+<h2 id="orgb38d119">Summary</h2>
+<div class="outline-text-2" id="text-orgb38d119">
+</div>
+</section>
+<section id="slide-orgbc03f33">
+<h3 id="orgbc03f33">Why Bayesian?</h3>
+<ul>
+<li>"Good" reason
+<ul>
+<li>The study should employ a flexible design to incorporate external knowledge that is essential for achieving its objectives</li>
+
+</ul></li>
+<li>"Not-that-good" reason
+<ul>
+<li>We do not have a valid hypothesis to test</li>
+<li>We do not have adequate knowledge about the treatment</li>
+<li>we lack a suitable criterion for determining the success of the study</li>
+
+</ul></li>
+
+</ul>
+</section>
+<section id="slide-org93d9bcc">
+<h3 id="org93d9bcc">Next Session in March</h3>
+<ul>
+<li>Focus on phase I study designs
+<ul>
+<li>3+3</li>
+<li>BOIN</li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/markdown/markdown.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: false,
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+overview: true,
+margin: 0.10,
+
+transition: 'convex',
+transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealMarkdown, RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>
