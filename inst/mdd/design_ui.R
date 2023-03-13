@@ -12,10 +12,11 @@ f_get_data <- function(power_range, delta, sigma, ratio, by = 0.02) {
     for (p in power) {
         cur_n   <- si_mdd_samplesize(delta, sigma, p, ratio = ratio)
         cur_mdd <- si_mdd_mdd(cur_n[1], cur_n[2], sigma)
-        rst     <- rbind(rst, c(p, cur_n, cur_mdd))
+        rst     <- rbind(rst, c(p, cur_n, cur_mdd, delta, sigma))
     }
 
-    colnames(rst) <- c("Power", "n0", "n1", "N", "MDD")
+    colnames(rst) <- c("Power", "n0", "n1", "N", "MDD",
+                       "Delta", "Sigma")
     data.frame(rst)
 }
 
@@ -44,15 +45,15 @@ tab_mdd <- function() {
              fluidRow(
                  column(3,
                         wellPanel(
-                            numericInput(
+                            textInput(
                                 "inDelta",
                                 withMathJax("$$\\Delta = \\theta_1 - \\theta_0$$"),
-                                value = 3, min = 0, step = 1),
+                                value = "3, 3.5"),
 
-                            numericInput(
+                            textInput(
                                 "inSigma",
                                 withMathJax("$$\\sigma$$"),
-                                value = 6, min = 0, step = 1),
+                                value = "5, 6"),
 
                             sliderInput(
                                 "inPower",
@@ -64,33 +65,18 @@ tab_mdd <- function() {
                                 "inRatio",
                                 "Randomization Ratio (Treatment vs. Control)",
                                 value = 1, min = 0, step = 1)
-                        ),
-
-                        wellPanel(
-                            numericInput(
-                                "inYlimN",
-                                "Y Limit: N",
-                                value = 0, min = 0, step = 10),
-
-                            numericInput(
-                                "inYlimMDD",
-                                "Y Limit: MDD",
-                                value = 0, min = 0, step = 1)
                         )),
                  column(9,
-                        fluidRow(
-                            column(6,
-                                   h4("Sample Size by Power"),
-                                   plotlyOutput("pltNbyPower",   height = "350px"),
-                                   h4("MDD by Power"),
-                                   plotlyOutput("pltMDDbyPower", height = "350px")
-                                   ),
-                            column(6,
-                                   h4("MDD by Sample Size"),
-                                   plotlyOutput("pltMDDbyN", height = "350px"),
-                                   h4("Power by MDD"),
-                                   plotlyOutput("pltPowerbyMDD", height = "350px")
-                                   ))
+                        radioButtons("inType",
+                                     "Select Type of Figure",
+                                     choices =
+                                         c("Sample Size by Power" = "nbypower",
+                                           "MDD by Power"         = "mddbypower",
+                                           "MDD by Sample Size"   = "mddbyn",
+                                           "Power by MDD"         = "powerbymdd"
+                                           )
+                                     ),
+                        plotlyOutput("pltMDD", height = "500px")
                         )))
 }
 
@@ -101,8 +87,8 @@ tab_mdd <- function() {
 get_data <- reactive({
 
     power_range <- input$inPower
-    delta       <- input$inDelta
-    sigma       <- input$inSigma
+    delta       <- tkt_assign(input$inDelta)
+    sigma       <- tkt_assign(input$inSigma)
     ratio       <- input$inRatio
 
     if (is.null(power_range) |
@@ -113,11 +99,43 @@ get_data <- reactive({
         return(NULL)
 
     }
+    rst_all <- NULL
+    for (d in delta) {
+        for (s in sigma) {
+            cur_rst <- f_get_data(power_range, d, s, ratio, by = 0.02)
+            rst_all <- rbind(rst_all, cur_rst)
+        }
+    }
 
-    rst <- f_get_data(power_range, delta, sigma, ratio, by = 0.02)
-    rst
+    rst_all %>%
+        mutate(Delta = factor(Delta),
+               Sigma = paste("Sigma =", Sigma))
 })
 
 ##-------------------------------------------------------------
 ##           PLOTS
 ##-------------------------------------------------------------
+
+get_plot <- reactive({
+    dat <- get_data()
+
+    if (is.null(dat))
+        return(NULL)
+
+    type <- input$inType
+
+    xy <- switch(type,
+                 nbypower   = c("Power", "N"),
+                 mddbypower = c("Power", "MDD"),
+                 powerbymdd = c("MDD",   "Power"),
+                 mddbyn     = c("N",     "MDD"))
+
+    dat$x <- dat[[xy[1]]]
+    dat$y <- dat[[xy[2]]]
+
+    ggplot(data = dat, aes(x = x, y = y, group = Delta)) +
+        geom_line(aes(col = Delta)) +
+        theme_bw() +
+        labs(x = xy[1], y = xy[2]) +
+        facet_wrap( ~ Sigma)
+})
