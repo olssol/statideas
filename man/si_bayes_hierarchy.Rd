@@ -11,7 +11,8 @@ si_bayes_hierarchy(
   pri_sig = 2.5,
   adjust = 1.5,
   by_study = FALSE,
-  pri_ab = c(0.5, 0, 5)
+  pri_ab = c(0.5, 0, 5),
+  label = "Subgroup"
 )
 }
 \description{

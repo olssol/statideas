@@ -1,10 +1,42 @@
-require(optMTP)
-
 ## -----------------------------------------------------------
 ##
 ##          FUNCTIONS
 ##
 ## -----------------------------------------------------------
+
+stb_tl_bayes_beta_post <- function(obs_y  = 1,
+                                   obs_n  = 10,
+                                   pri_ab = c(1, 1),
+                                   x      = seq(0, 1, by = 0.005),
+                                   n_post = 3000) {
+    pos_a   <- pri_ab[1] + obs_y
+    pos_b   <- pri_ab[2] + obs_n - obs_y
+
+    rst_den <- NULL
+    if (!is.null(x)) {
+        rst <- sapply(x, function(v) {
+            c(dbeta(v, pos_a, pos_b),
+              1 - pbeta(v, pos_a, pos_b))
+        })
+
+        rst_den <- cbind(x     = x,
+                         y_pdf = rst[1, ],
+                         y_cdf = rst[2, ])
+    }
+
+    post_smp <- NULL
+    if (!is.null(n_post)) {
+        post_smp <- rbeta(n_post, pos_a, pos_b)
+    }
+
+
+    list(pri_ab   = pri_ab,
+         pos_ab   = c(pos_a, pos_b),
+         density  = rst_den,
+         post_smp = post_smp)
+}
+
+
 
 ## frequentist test
 get_freq_txt <- function(obs_y, obs_n, p_h0) {
@@ -45,7 +77,9 @@ tab_main <- function() {
                 id   = "mainpanel",
                 tab_slides(),
                 tab_basic(),
-                tab_hier()
+                tab_2arm(),
+                tab_hier(),
+                tab_mixture()
                 )
 }
 
@@ -60,18 +94,18 @@ tab_slides <- function() {
 
 
 tab_hier <- function() {
-    tabPanel("Hierarchical Model",
+    tabPanel("Demo 3: Subgroup Analysis",
              fluidRow(
                  column(3,
                         wellPanel(
                             textInput("inHierY",
-                                      "Number of Responders (Sep. by Comma)",
+                                      "Number of Responders in Each Subgroup (Sep. by Comma)",
                                       value = "5, 10, 80"),
                             textInput("inHierN",
-                                      "Total Number of Patients (Sep by Comma)",
+                                      "Number of Patients in Each Subgroup (Sep. by Comma)",
                                       value = "20, 20, 200"),
                             numericInput("inHierSig",
-                                         "Variation Among Studies",
+                                         "Variation Among Subgroups",
                                          value = 2,
                                          min = 0, max = 10, step = 5),
                             actionButton("btnSmp", "Bayes Sample")
@@ -83,8 +117,92 @@ tab_hier <- function() {
 }
 
 
+tab_mixture <- function() {
+    tabPanel("Demo 4: Mixture Prior",
+             fluidRow(
+                 column(3,
+                        wellPanel(
+                            numericInput("inD4ObsY",
+                                      "Number of Responders in Existing Study",
+                                      value = 10, min = 0, step = 1),
+                            numericInput("inD4ObsN",
+                                        "Number of Patients in Existing Study",
+                                        value = 30, min = 0, step = 1),
+                            numericInput("inD4Weight",
+                                         "Weight on Existing Study",
+                                         value = 1,
+                                         min = 0, max = 1, step = 0.1))
+                        ),
+                 column(9,
+                        plotOutput("pltMixture"))
+             ))
+}
+
+
+tab_2arm <- function() {
+    tabPanel("Demo 2: A POC Study",
+             fluidRow(
+                 column(3,
+                        wellPanel(
+                            h4("Observed Data"),
+                            numericInput(
+                                "inD2ObsY0",
+                                "Number of Responders (Control)",
+                                value = 6, min = 0, step = 1),
+                            numericInput(
+                                "inD2ObsY1",
+                                "Number of Responders (Treatment)",
+                                value = 8, min = 0, step = 1),
+                            numericInput(
+                                "inD2ObsN0",
+                                "Number of Patients (Control)",
+                                value = 20, min = 0, step = 5),
+                            numericInput(
+                                "inD2ObsN1",
+                                "Number of Patients (Treatment)",
+                                value = 20, min = 0, step = 5)),
+                        wellPanel(
+                            h4("Decision-Making"),
+                            numericInput(
+                                "inClinDiff",
+                                "Clinically Meaningful Difference (R)",
+                                value = 0.15, min = 0, max = 1, step = 0.01),
+                            numericInput(
+                                "inThresh1",
+                                "Success Threshold (C1)",
+                                value = 0.8, min = 0, max = 1, step = 0.01),
+                            numericInput(
+                                "inThresh2",
+                                "Futility Threshold (C2)",
+                                value = 0.2, min = 0, max = 1, step = 0.01),
+
+                            checkboxInput(
+                                "inChkPval",
+                                "Present P-Values",
+                                value = FALSE)
+                            )
+                        ),
+                 column(9,
+                        fluidRow(
+                            column(6,
+                                   h4("Response Rate by Arm"),
+                                   plotOutput("pltD2Arm")),
+                            column(6,
+                                   h4("Effect"),
+                                   plotOutput("pltD2Diff"))
+                        ),
+                        fluidRow(
+                            column(12,
+                                   h4("Decision Map for Futility (Gray) or Efficacy (Red)"),
+                                   plotOutput("pltD2Map", height = "600px")),
+                            column(6)
+                        ))
+             ))
+}
+
+
 tab_basic <- function() {
-    tabPanel("Basic Concepts",
+    tabPanel("Demo 1: Incorporating Prior",
              fluidRow(
                  column(3,
                         wellPanel(
@@ -94,6 +212,7 @@ tab_basic <- function() {
                                 "Range of Response Rate",
                                 value = c(0.6, 0.8),
                                 min = 0, max = 1, step = 0.05),
+
                             numericInput(
                                 "inPriConf",
                                 "Confidence Level (%)",
@@ -158,7 +277,7 @@ tab_basic <- function() {
 
 
 ##-------------------------------------------------------------
-##           DATA MANIPULATION
+##           DATA MANIPULATION: DEMO 1
 ##-------------------------------------------------------------
 
 ## elicit prior distribution
@@ -375,9 +494,92 @@ plot_overlay <- reactive({
               legend.title    = element_blank())
 })
 
+##-------------------------------------------------------------
+##           DEMO 2
+##-------------------------------------------------------------
+
+## get tippling point
+get_d2_tipping <- reactive({
+    n0 <- input$inD2ObsN0
+    n1 <- input$inD2ObsN1
+    if (is.null(n0) | is.null(n1))
+        return(NULL)
+
+    si_bayes_tipping(n0, n1, n_post = 5000)
+})
+
+## two arm analysis
+get_arm2_rst <- reactive({
+
+    if (is.null(input$inD2ObsY0) |
+        is.null(input$inD2ObsY1) |
+        is.null(input$inD2ObsN0) |
+        is.null(input$inD2ObsN1))
+
+        return(NULL)
+
+    rst_trt <- stb_tl_bayes_beta_post(obs_y  = input$inD2ObsY1,
+                                      obs_n  = input$inD2ObsN1)
+
+    rst_ctl <- stb_tl_bayes_beta_post(obs_y  = input$inD2ObsY0,
+                                      obs_n  = input$inD2ObsN0)
+
+
+    rst_diff <- rst_trt$post_smp - rst_ctl$post_smp
+    den_diff <- density(rst_diff, from = -1, to = 1, n = 501, adj = 1.5)
+    diff_x   <- den_diff$x
+    diff_y   <- den_diff$y
+    diff_px  <- sapply(diff_x, function(x) mean(rst_diff > x))
+
+    rbind(data.frame(rst_trt$density) %>%
+          mutate(Group = "Treatment"),
+          data.frame(rst_ctl$density) %>%
+          mutate(Group = "Control"),
+          data.frame(x     = diff_x,
+                     y_pdf = diff_y,
+                     y_cdf = diff_px,
+                     Group = "Difference"))
+})
+
+## plot posterior
+plot_d2_byarm <- reactive({
+    dat_rst <- get_arm2_rst()
+
+    if (is.null(dat_rst))
+        return(NULL)
+
+    dat <- dat_rst %>%
+        filter(Group != "Difference")
+
+    ggplot(dat, aes(x = x, y = y_pdf)) +
+        geom_line(aes(group = Group, col = Group)) +
+        theme_bw() +
+        labs(x = "Rate", y = "Density") +
+        theme(legend.position = c(0.8, 0.8),
+              legend.title    = element_blank())
+})
+
+## plot posterior
+plot_d2_diff <- reactive({
+    dat_rst <- get_arm2_rst()
+
+    if (is.null(dat_rst))
+        return(NULL)
+
+    dat <- dat_rst %>%
+        filter(Group == "Difference") %>%
+        rename(x  = x,
+               y  = y_pdf,
+               px = y_cdf) %>%
+        select(-Group)
+
+    si_bayes_plt_dist(dat,
+                      ver_x = input$inClinDiff,
+                      xlim  = c(-1, 1))
+})
 
 ##-------------------------------------------------------------
-##           Hierarchical
+##           DEMO 3: Hierarchical
 ##-------------------------------------------------------------
 observeEvent(input$btnSmp, {
 
@@ -409,8 +611,12 @@ plot_hier <- reactive({
 
     dat <- userLog$hier_smp
 
-    if (is.null(dat))
+    if (is.null(dat)) {
         return(NULL)
+    }
+
+    dat <- dat %>%
+        mutate(study = paste("Subgroup", study))
 
     ggplot(data = dat, aes(x = x, y = y)) +
         geom_line(aes(group = grp, col = grp)) +
@@ -419,4 +625,36 @@ plot_hier <- reactive({
         labs(x = "Rate", y = "Density") +
         theme(legend.position = "top",
               legend.title    = element_blank())
+})
+
+
+##-------------------------------------------------------------
+##           DEMO 4: Mixture Prior
+##-------------------------------------------------------------
+
+get_d4_flat <- reactive({
+    rbeta(3000, 1, 1)
+})
+
+get_d4_study <- reactive({
+    rbeta(3000, input$inD4ObsY + 1, input$inD4ObsN - input$inD4ObsY + 1)
+})
+
+get_d4_mixture <- reactive({
+
+    s_flat  <- get_d4_flat()
+    s_study <- get_d4_study()
+    weight  <- input$inD4Weight
+
+    if (1 == weight) {
+        rst <- s_study
+    } else if (0 == weight) {
+        rst <- s_flat
+    } else {
+        s1 <- sample(s_study,  floor(3000 * weight))
+        s2 <- sample(s_flat, floor(3000 * (1 - weight)))
+        rst <- c(s1, s2)
+    }
+
+    rst
 })

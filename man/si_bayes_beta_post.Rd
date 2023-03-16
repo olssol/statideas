@@ -5,7 +5,7 @@
 \title{Get posterior distribution}
 \usage{
 si_bayes_beta_post(
-  x = seq(0, 1, by = 0.01),
+  x = seq(0, 1, by = 0.005),
   obs_y = 1,
   obs_n = 10,
   pri_ab = c(1, 1)

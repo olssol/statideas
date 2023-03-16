@@ -230,3 +230,23 @@ a {
     min-width: 200px;
     height: 30px;
 }*/
+
+
+/*-------------loading animation---*/
+#loadmessage {
+    z-index:     5000;
+    text-align:  center;
+    vertical-align:middle;
+    font-weight: bold;
+    font-size:   100%;
+    position:    absolute;
+    top:         0;
+    left:        0;
+    height:      100%;
+    width:       100%;
+    margin:      auto;
+    padding-top: 35%;
+    background:  url('loading.gif')
+                 50% 45%
+                 no-repeat;
+}
