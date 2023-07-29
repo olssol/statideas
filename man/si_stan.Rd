@@ -6,7 +6,7 @@
 \usage{
 si_stan(
   lst_data,
-  stan_mdl = c("hier"),
+  stan_mdl = c("hier", "mixture", "logn"),
   chains = 4,
   iter = 2000,
   warmup = 1000,

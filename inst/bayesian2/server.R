@@ -15,6 +15,7 @@ require(statidea)
 shinyServer(function(input, output, session) {
 
     source("design_ui.R", local = TRUE)
+    source("fix_fun.R", local = TRUE)
 
     userLog          <- reactiveValues()
     userLog$data     <- NULL
