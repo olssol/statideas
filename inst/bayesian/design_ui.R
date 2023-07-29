@@ -41,7 +41,7 @@ stb_tl_bayes_beta_post <- function(obs_y  = 1,
 ## frequentist test
 get_freq_txt <- function(obs_y, obs_n, p_h0) {
     rst <- binom.test(x = obs_y, n = obs_n, p = p_h0,
-                      alternative = "greater")
+                      alternative = "two.sided")
 
     txt <- sprintf("<p>The mean response rate is <b>%5.2f</b>
                     with 95%% confidence interval <b>(%5.2f, %5.2f)</b>. </p>
@@ -252,22 +252,27 @@ tab_basic <- function() {
                  column(9,
                         fluidRow(
                             column(6,
-                                   h4("Prior Distribution"),
+                                   h4("Prior Distribution of Response Rate"),
                                    plotOutput("pltPri",
                                               click    = "pri_click",
                                               dblclick = "pri_dblclick")),
                             column(6,
-                                   h4("Observed Data"),
-                                   plotOutput("pltObs",
-                                              click    = "obs_click",
-                                              dblclick = "obs_dblclick"))
+                                   h4("Observed Data I"),
+                                   plotOutput("pltObsFreq"))
                         ),
                         fluidRow(
                             column(6,
-                                   h4("Posterior Distribution"),
+                                   h4("Observed Data II"),
+                                   plotOutput("pltObs",
+                                              click    = "obs_click",
+                                              dblclick = "obs_dblclick")),
+                            column(6,
+                                   h4("Posterior Distribution of Response Rate"),
                                    plotOutput("pltPost",
                                               click    = "pos_click",
                                               dblclick = "pos_dblclick")),
+                        ),
+                        fluidRow(
                             column(6,
                                    h4("All Distributions"),
                                    plotOutput("pltOverlay"))
@@ -468,6 +473,19 @@ plot_obs <- reactive({
 
     rst
 })
+
+## plot observed
+plot_obs_freq <- reactive({
+    obs_y  <- input$inObsY
+    obs_n  <- input$inObsN
+
+    ggplot(data = data.frame(Group  = c("Responders", "Non-responders"),
+                             Number = c(obs_y, obs_n- obs_y)),
+           aes(x = Group, y = Number)) +
+        geom_col(alpha = 0.8, width = 0.5) +
+        theme_bw()
+})
+
 
 ## plot posterior distribution
 plot_post <- reactive({

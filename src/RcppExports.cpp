@@ -77,6 +77,8 @@ END_RCPP
 }
 
 RcppExport SEXP _rcpp_module_boot_stan_fit4hier_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4logn_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4mixture_mod();
 
 static const R_CallMethodDef CallEntries[] = {
     {"_statidea_c_test", (DL_FUNC) &_statidea_c_test, 1},
@@ -85,6 +87,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_statidea_c_mtp", (DL_FUNC) &_statidea_c_mtp, 3},
     {"_statidea_c_mtp_step", (DL_FUNC) &_statidea_c_mtp_step, 5},
     {"_rcpp_module_boot_stan_fit4hier_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4hier_mod, 0},
+    {"_rcpp_module_boot_stan_fit4logn_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4logn_mod, 0},
+    {"_rcpp_module_boot_stan_fit4mixture_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4mixture_mod, 0},
     {NULL, NULL, 0}
 };
 

@@ -3,6 +3,7 @@
 ##                 STAN
 ##
 ## -----------------------------------------------------------------------------
+
 #' Call STAN models
 #'
 #' Call STAN models. Called by \code{psrwe_powerp}.
@@ -21,7 +22,7 @@
 #' @export
 #'
 si_stan <- function(lst_data,
-                    stan_mdl = c("hier"),
+                    stan_mdl = c("hier", "mixture", "logn"),
                     chains = 4, iter = 2000, warmup = 1000, cores = 4,
                     control = list(adapt_delta = 0.95), ...) {
 

@@ -252,3 +252,69 @@ si_bayes_hierarchy <- function(vec_y,
     ## return
     rst
 }
+
+#' Bayesian mixture prior
+#'
+#'
+#' @export
+#'
+si_bayes_mixture <- function(cur_y, cur_n, exist_y, exist_n,
+                             weight = 0.5, ...) {
+
+    cat(cur_y, cur_n, exist_y, exist_n, "\n")
+
+    ## stan sampling
+    lst_data <- list(exist_y = exist_y,
+                     exist_n = exist_n,
+                     cur_y   = cur_y,
+                     cur_n   = cur_n,
+                     weight  = weight)
+
+    rst <- si_stan(lst_data,
+                   stan_mdl = "mixture",
+                   ...)
+
+    theta <- rstan::extract(rst, pars = "theta")$theta
+    theta
+}
+
+
+#' Bayesian log normal models for FXI project
+#'
+#'
+#' @export
+#'
+#'
+si_bayes_fix <- function(y, L_m, U_m, L_cv, U_cv, ...){
+
+    if (!is.vector(y))
+        stop("y must be a vector.")
+
+    if (length(L_m)  != 1 |
+        length(U_m)  != 1 |
+        length(L_cv) != 1 |
+        length(U_cv) != 1)
+        stop("L or U must be a single number.")
+
+    lst_data <- list(N    = length(y),
+                     y    = y   / 100,
+                     L_m  = L_m / 100,
+                     U_m  = U_m / 100,
+                     L_cv = L_cv,
+                     U_cv = U_cv)
+
+    fit <- si_stan(lst_data,
+                   stan_mdl = "logn",
+                   ...)
+
+    post_par     = rstan::extract(fit)
+    post_m       = post_par$m * 100
+    post_cv      = post_par$cv
+    post_y_tilde = post_par$y_tilde * 100
+
+    rst <- list(post_m       = post_m,
+                post_cv      = post_cv,
+                post_y_tilde = post_y_tilde)
+
+    return(rst)
+}

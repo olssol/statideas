@@ -34,7 +34,7 @@ si_shiny <- function(appname = "boundary", pkgname = "statidea") {
 
     appDir <- system.file(appname, package = "statidea")
     if (appDir == "") {
-        stop("Could not find Shiny directory. Try re-installing `idem`.",
+        stop("Could not find Shiny directory. Try re-installing `statidea`.",
              call. = FALSE)
     }
 

@@ -1,10 +1,20 @@
 options(shiny.maxRequestSize = 200*1024^2)
+
+library(MASS)
+library(data.table)
+library(tidyverse)
+library(dplyr)
+library(rms)
+library(ggplot2)
+library(shiny)
+
 require(plotly)
 require(statidea)
 
+
 shinyServer(function(input, output, session) {
 
-    source("design_ui.R", local = TRUE);
+    source("design_ui.R", local = TRUE)
 
     userLog          <- reactiveValues()
     userLog$data     <- NULL
@@ -147,12 +157,20 @@ shinyServer(function(input, output, session) {
     ##--------------------------------------
     ##---------DEMO 4-----------------------
     ##--------------------------------------
+    output$outFreq_p <- renderUI({
+        HTML(get_freq_rst_p())
+    })
+
+    output$outBayes_p <- renderUI({
+        HTML(get_bayes_rst_p())
+    })
+
     output$pltMixture <- renderPlot({
         dat <- rbind(data.frame(group = "Weekly Informative",
                                 x     = get_d4_flat()),
                      data.frame(group = "Existing Study",
                                 x     = get_d4_study()),
-                     data.frame(group = "Mixture",
+                     data.frame(group = "Prior",
                                 x     = get_d4_mixture())
                      )
 
@@ -160,10 +178,73 @@ shinyServer(function(input, output, session) {
             geom_density(aes(group = group, col = group),
                          adjust = 1.5) +
             theme_bw() +
+            xlim(0, 1) +
             theme(legend.position = "top",
-                  legend.title    = element_blank())
+                  legend.title    = element_blank()) +
+            labs(x = "Success Rate", y = "Density") +
+            scale_color_manual(values = c("Existing Study" = "black",
+                                          "Weekly Informative" = "cyan",
+                                          "Prior" = "brown"))
 
         rst
+    })
+
+    output$pltOverlay_p <- renderPlot({
+        dat <- rbind(data.frame(group = "Posterior",
+                                x     = get_d4_posterior()),
+                     data.frame(group = "Existing Study",
+                                x     = get_d4_study()),
+                     data.frame(group = "Current Study",
+                                x     = get_d4_study_cur()),
+                     data.frame(group = "Prior",
+                                x     = get_d4_mixture())
+                     )
+
+        rst <- ggplot(data = dat, aes(x = x)) +
+            geom_density(aes(group = group, col = group),
+                         adjust = 1.5) +
+            theme_bw() +
+            xlim(0, 1) +
+            theme(legend.position = "top",
+                  legend.title    = element_blank()) +
+            labs(x = "Success Rate", y = "Density") +
+            scale_color_manual(values = c("Posterior" = "red",
+                                          "Existing Study" = "black",
+                                          "Current Study" = "green",
+                                          "Prior" = "brown"))
+
+        rst
+    })
+
+    ##--------------------------------------
+    ##---------DEMO FIX---------------------
+    ##--------------------------------------
+
+    output$table_FIX = renderTable({table_FIX()})
+    output$density_m = renderPlot({density_m()})
+    output$density_cv = renderPlot({density_cv()})
+    output$density_y_tilde = renderPlot({density_y_tilde()})
+
+    output$pdf_p_prior = renderPlot({pdf_p_prior()})
+    output$pdf_p_post = renderPlot({pdf_p_post()})
+
+    ##-----------------slider--------------
+    output$slider_m = renderUI({
+        return(sliderInput("slider_m",
+                           "Threshold of Mean of FIX Functional Activity",
+                           min=0,max=200,step=5,value=c(35,70),width="90%"))
+    })
+
+    output$slider_cv = renderUI({
+        return(sliderInput("slider_cv",
+                           "Threshold of Coefficient of Variation of FIX Functional Activity",
+                           min=0,max=3,step=0.1,value=c(0.5,1.2),width="90%"))
+    })
+
+    output$slider_y_tilde = renderUI({
+        return(sliderInput("slider_y_tilde",
+                           "Threshold of Predicted FIX Functional Activity",
+                           min=0,max=200,step=5,value=c(5,150),width="90%"))
     })
 
 })
