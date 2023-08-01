@@ -3,6 +3,8 @@
 export(c_mtp)
 export(c_mtp_single)
 export(c_mtp_step)
+export(fun_hist)
+export(fun_kernel_density)
 export(om_print_grp)
 export(om_rejection)
 export(om_rejection_optim)

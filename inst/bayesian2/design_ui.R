@@ -374,16 +374,18 @@ tab_fix_outcome <- function() {
                          plotOutput('density_m',
                                     width = "100%",
                                     height = "500px"),
-                         htmlOutput("slider_m")
+                         htmlOutput("slider_m"),
+                         htmlOutput("slider_m_zoom")
                          ),
                 tabPanel("Predicted FIX Activity for the Next Patient",
                          plotOutput('density_y_tilde',
                                     width = "100%",
                                     height = "500px"),
-                         htmlOutput("slider_y_tilde")
+                         htmlOutput("slider_y_tilde"),
+                         htmlOutput("slider_y_tilde_zoom")
                          ),
                 tabPanel("Summary of FIX Activity Mean",
-                         tableOutput("table_FIX")
+                         tableOutput("table_FIX"),
                          )
                 )
 }
@@ -889,7 +891,7 @@ get_bayes_rst_p <- reactive({
 fix_y = reactive({
     as.numeric(str_split(input$y,
                          ",",
-                         simplify = TRUE))/100 # percentage
+                         simplify = TRUE)) # percentage
 })
 
 ##-----------Summary Table-----------
@@ -900,8 +902,8 @@ table_FIX = reactive({
                                 quantile(fix_y())),
                               nrow = 1))
 
-    colnames(table) = c("Mean","SD","CV","Min","Q1",
-                        "Median","Q3","Max")
+    colnames(table) = c("Mean (%)","SD (%)","CV","Min (%)",
+                        "Q1 (%)","Median (%)","Q3 (%)","Max (%)")
     return(table)
 })
 
@@ -916,43 +918,29 @@ fit_FIX = reactive({
 
 ##----------------------Density Plot----------------------
 density_m = reactive({
-    if (is.null(input$slider_m)){
-        return(0)
-    } # temperal value before having input value
-
-    pdf = fun_kernel_density(
-        x=fit_FIX()$post_m*100,
-        cut=input$slider_m,
-        xlab_name="Posterior Mean of FIX Functional Activity (%)",
-        bquote(m),"Y")
-
-    return(pdf)
+  if (is.null(input$slider_m)){return(0)} # temperal value before having input value
+  pdf = fun_kernel_density(x = fit_FIX()$post_m,
+                           cut = input$slider_m,
+                           xlab_name = "Mean of FIX Functional Activity (m%)",
+                           para_notation = bquote(m),percent = "Y",
+                           from = 0,to = NA)
+  return(pdf)
 })
-
 density_cv = reactive({
-    if (is.null(input$slider_cv)) {
-        return(0)
-    } # temperal value before having input value
-
-    pdf = fun_kernel_density(
-        x=fit_FIX()$post_cv,
-        cut=input$slider_cv,
-        xlab_name="Posterior Coefficient of Variation of FIX Functional Activity",
-        bquote(cv),
-        "N")
-
-    return(pdf)
+  if (is.null(input$slider_cv)){return(0)} # temperal value before having input value
+  pdf = fun_kernel_density(x = fit_FIX()$post_cv,
+                           cut = input$slider_cv,
+                           xlab_name = "Coefficient of Variation of FIX Functional Activity (cv)",
+                           para_notation = bquote(cv),percent = "N",
+                           from = 0,to = NA)
+  return(pdf)
 })
-
 density_y_tilde = reactive({
-    if (is.null(input$slider_y_tilde)){
-        return(0)
-    } # temperal value before having input value
-
-    pdf = fun_kernel_density(
-        x=fit_FIX()$post_y_tilde*100,
-        cut=input$slider_y_tilde,
-        xlab_name="Posterior Predicted FIX Functional Activity (%)",bquote(tilde(y)),"Y")
-
-    return(pdf)
+  if (is.null(input$slider_y_tilde)){return(0)} # temperal value before having input value
+  pdf = fun_kernel_density(x = fit_FIX()$post_y_tilde,
+                           cut = input$slider_y_tilde,
+                           xlab_name = bquote("Predicted FIX Functional Activity ("*tilde(y)*"%)"),
+                           para_notation = bquote(tilde(y)),
+                           percent = "Y",from = 0,to = NA)
+  return(pdf)
 })
