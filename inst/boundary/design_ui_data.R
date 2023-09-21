@@ -478,7 +478,7 @@ get_design_6 <- reactive({
         }
 
         if ("rpact" == rpkg) {
-            cur_rst  <- simutb::stb_tl_gsd_boundary(
+            cur_rst  <- stb_tl_gsd_boundary(
                                     typeOfDesign   = i,
                                     info_fracs     = info_fracs,
                                     alpha          = alpha,
@@ -488,7 +488,7 @@ get_design_6 <- reactive({
                                     alpha_spending = cur_boundary
                                 )
         } else {
-            cur_rst  <- simutb::stb_tl_gsd_boundary(
+            cur_rst  <- stb_tl_gsd_boundary(
                                     typeOfDesign   = i,
                                     info_fracs     = info_fracs,
                                     alpha          = alpha,
@@ -499,7 +499,7 @@ get_design_6 <- reactive({
                                 )
         }
 
-        cur_out <- simutb::stb_tl_gsd_outcome(cur_rst$info_frac,
+        cur_out <- stb_tl_gsd_outcome(cur_rst$info_frac,
                                               cur_rst$ia_power,
                                               n           = n,
                                               enroll_rate = enroll_rate,
