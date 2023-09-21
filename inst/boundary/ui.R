@@ -1,6 +1,5 @@
 library(shinythemes)
 library(plotly)
-library(simutb)
 library(statidea)
 library(DT)
 
