@@ -20,7 +20,10 @@
 #'     slice_head
 #' @importFrom tidyr gather
 #' @importFrom data.table rbindlist
+#'
+#' @importFrom gsDesign gsDesign gsBoundSummary sfPower sfPoints
 #' @importFrom rpact getDesignGroupSequential getDesignSet
+#'
 #' @importFrom rstan sampling
 #' @importFrom mvtnorm rmvnorm pmvnorm dmvnorm
 #'

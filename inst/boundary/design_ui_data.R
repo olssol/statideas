@@ -213,7 +213,7 @@ get_design_5 <- reactive({
     boundary   <- isolate(tkt_assign(input$inNominalAlpha) / 2)
     alpha      <- isolate(as.numeric(input$inAlpha5) / 2)
     power      <- isolate(as.numeric(input$inPower5))
-    rst        <- simutb::stb_tl_gsd_solve(info_fracs = info_fracs,
+    rst        <- stb_tl_gsd_solve(info_fracs = info_fracs,
                                            boundary   = boundary,
                                            alpha      = alpha,
                                            power      = power)
@@ -402,10 +402,10 @@ get_curve_plot_5 <- reactive({
 
     rst <- NULL
     for (i in seq(ia_frac[1], ia_frac[2], 0.05)) {
-        cur_rst <- simutb::stb_tl_gsd_solve(info_fracs = c(i, 1),
-                                            boundary   = c(ia_alpha, NA),
-                                            alpha      = alpha,
-                                            power      = 0)
+        cur_rst <- stb_tl_gsd_solve(info_fracs = c(i, 1),
+                                    boundary   = c(ia_alpha, NA),
+                                    alpha      = alpha,
+                                    power      = 0)
         rst <- rbind(rst,
                      c(i, cur_rst$nominal_alpha[2]))
     }
