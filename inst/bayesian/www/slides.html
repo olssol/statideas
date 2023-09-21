@@ -19,32 +19,32 @@
 <div class="reveal">
 <div class="slides">
 <section id="sec-title-slide">
-<h1 class="title">An Introduction to Bayesian Designs</h1><h2 class="author">CG Wang</h2><p class="date">Created: 2023-07-17 Mon 21:36</p>
+<h1 class="title">An Introduction to Bayesian Designs</h1><h2 class="author">CG Wang</h2><p class="date">Created: 2023-09-18 Mon 23:40</p>
 </section>
 <section>
-<section id="slide-orge0b7a02">
-<h2 id="orge0b7a02">A Preamble</h2>
-<div class="outline-text-2" id="text-orge0b7a02">
+<section id="slide-orge3bd5fe">
+<h2 id="orge3bd5fe">A Preamble</h2>
+<div class="outline-text-2" id="text-orge3bd5fe">
 </div>
 </section>
-<section id="slide-org4459e78">
-<h3 id="org4459e78">A Recent Nature Reviews Paper</h3>
+<section id="slide-orgc4471d9">
+<h3 id="orgc4471d9">A Recent Nature Reviews Paper</h3>
 
-<div id="org70eada2" class="figure">
+<div id="org9779192" class="figure">
 <p><img src="./Figures/Bayesian/nature_paper.png" alt="nature_paper.png" height="400px" />
 </p>
 </div>
 </section>
-<section id="slide-org02e6cfe">
-<h3 id="org02e6cfe">A Recent Paper by FDA Authors</h3>
+<section id="slide-org0502b70">
+<h3 id="org0502b70">A Recent Paper by FDA Authors</h3>
 
-<div id="org9b91977" class="figure">
+<div id="orgae93acf" class="figure">
 <p><img src="./Figures/Bayesian/bayesian_fda_paper.png" alt="bayesian_fda_paper.png" height="500px" />
 </p>
 </div>
 </section>
-<section id="slide-orgfbb11a6">
-<h3 id="orgfbb11a6">The Pfizer COVID-19 Study</h3>
+<section id="slide-org81aeb89">
+<h3 id="org81aeb89">The Pfizer COVID-19 Study</h3>
 <ul>
 <li>Primary efficacy analysis
 <ul>
@@ -72,15 +72,15 @@ the end of the trial was less than 5%</li>
 </section>
 </section>
 <section>
-<section id="slide-org811739a">
-<h2 id="org811739a">Basic Concepts</h2>
-<div class="outline-text-2" id="text-org811739a">
+<section id="slide-orgbd59c34">
+<h2 id="orgbd59c34">Basic Concepts</h2>
+<div class="outline-text-2" id="text-orgbd59c34">
 </div>
 </section>
-<section id="slide-org0efaf42">
-<h3 id="org0efaf42">Bayes' Rule (or Bayes' Theorem)</h3>
+<section id="slide-orgb9dc945">
+<h3 id="orgb9dc945">Bayes' Rule (or Bayes' Theorem)</h3>
 
-<div id="org8e9fc96" class="figure">
+<div id="org630d379" class="figure">
 <p><img src="./Figures/Bayesian/bayes_rule.png" alt="bayes_rule.png" height="400px" />
 </p>
 </div>
@@ -88,9 +88,33 @@ the end of the trial was less than 5%</li>
 <p>
 \[P(A|B) = {P(A \cap B) \over P(B)} = {P(B|A) P(A) \over P(B)}\]
 </p>
+
 </section>
-<section id="slide-orgb922d07">
-<h3 id="orgb922d07">The Bayesian Approach</h3>
+<section>
+
+<ul>
+<li>Fecal immunochemical test (FIH screening test) to detect colorectal cancer
+(CRC)</li>
+<li>2011-2015: the number of new cases of CRC in USA was 39.4 per 100,000 people
+(0.0394%)</li>
+<li>FIH test: sensitivity is 73.8%, 1 - specificity is 4%</li>
+<li>If you randomly take the test and are positive, what is the chance you have
+CRC?</li>
+
+</ul>
+
+</section>
+<section>
+
+
+<div id="orgdde4aa9" class="figure">
+<p><img src="./Figures/Bayesian/bayes_rule_2.png" alt="bayes_rule_2.png" height="600px" />
+</p>
+</div>
+
+</section>
+<section id="slide-org31f99c5">
+<h3 id="org31f99c5">The Bayesian Approach</h3>
 <div>
 \begin{array}{ccccc}
 P(A|B) & \propto & P(B|A) & \times & P(A) \\
@@ -103,8 +127,8 @@ L(\mbox{Data}| \theta)  & \times & \pi_0(\theta)\\
 
 </div>
 </section>
-<section id="slide-orgae4fc1c">
-<h3 id="orgae4fc1c">Features of Bayesian Approach</h3>
+<section id="slide-org6e83a39">
+<h3 id="org6e83a39">Features of Bayesian Approach</h3>
 <ul>
 <li>Offers a flexible platform for <i>incorporating prior knowledge</i>
 <ul>
@@ -129,8 +153,8 @@ or real-world data, population pharmacokinetics and pharmacodynamics, etc.</li>
 
 </ul>
 </section>
-<section id="slide-org56b6be7">
-<h3 id="org56b6be7">Bayesian or Frequentist?</h3>
+<section id="slide-org12a51e7">
+<h3 id="org12a51e7">Bayesian or Frequentist?</h3>
 <ul>
 <li>Frequentist conditions on hypotheses
 <ul>
@@ -143,7 +167,7 @@ or any unobserved data that are farther from the null hypothesis?</li>
 </ul>
 
 
-<div id="orgfcc6c5f" class="figure">
+<div id="org8d0e6ae" class="figure">
 <p><img src="./Figures/Bayesian/frequentist.png" alt="frequentist.png" height="400px" />
 </p>
 </div>
@@ -162,7 +186,7 @@ true, \(P(H_0 | Data)\)?</li>
 </ul>
 
 
-<div id="org0aabc4c" class="figure">
+<div id="org193ce48" class="figure">
 <p><img src="./Figures/Bayesian/bayesian.png" alt="bayesian.png" height="300px" />
 </p>
 </div>
@@ -181,13 +205,13 @@ true, \(P(H_0 | Data)\)?</li>
 </section>
 </section>
 <section>
-<section id="slide-org25449f5">
-<h2 id="org25449f5">Prior and Prior Elicitation</h2>
-<div class="outline-text-2" id="text-org25449f5">
+<section id="slide-org2925d50">
+<h2 id="org2925d50">Prior and Prior Elicitation</h2>
+<div class="outline-text-2" id="text-org2925d50">
 </div>
 </section>
-<section id="slide-org07f934d">
-<h3 id="org07f934d">Prior Knowledge</h3>
+<section id="slide-orge60b427">
+<h3 id="orge60b427">Prior Knowledge</h3>
 <ul>
 <li>Sources
 <ul>
@@ -206,8 +230,8 @@ into the data analysis</li>
 
 </ul>
 </section>
-<section id="slide-org1fd4cee">
-<h3 id="org1fd4cee">Type of Priors</h3>
+<section id="slide-org931c4ec">
+<h3 id="org931c4ec">Type of Priors</h3>
 <ul>
 <li>Based on the amount of information
 <ul>
@@ -226,8 +250,8 @@ into the data analysis</li>
 
 </ul>
 </section>
-<section id="slide-org1db9e69">
-<h3 id="org1db9e69">Prior Elicitation</h3>
+<section id="slide-org33fd688">
+<h3 id="org33fd688">Prior Elicitation</h3>
 <ul>
 <li>Often difficult for experts to provide direct information on parameters of
 statistical models
@@ -248,8 +272,8 @@ quantity of interest</li>
 
 </ul>
 </section>
-<section id="slide-orga09b6b3">
-<h3 id="orga09b6b3">Prior Elicitation Example</h3>
+<section id="slide-org044eaa2">
+<h3 id="org044eaa2">Prior Elicitation Example</h3>
 <ul>
 <li>Suppose weight loss for a randomly selected individual under a particular
 treatment can be modeled as \(N(\mu, \sigma^2)\)</li>
@@ -266,8 +290,8 @@ best guess, \((4.44)^2\), that is <i>suitably diffuse</i></li>
 
 </ul>
 </section>
-<section id="slide-orgc5729f3">
-<h3 id="orgc5729f3">Sensitivity Analysis</h3>
+<section id="slide-org8fee126">
+<h3 id="org8fee126">Sensitivity Analysis</h3>
 <ul>
 <li>Need to examine whether other reasonable prior distributions lead to
 qualitatively similar posterior conclusions</li>
@@ -283,13 +307,13 @@ inferences</li>
 </section>
 </section>
 <section>
-<section id="slide-org9320dac">
-<h2 id="org9320dac">Bayesian Designs</h2>
-<div class="outline-text-2" id="text-org9320dac">
+<section id="slide-org8323ffd">
+<h2 id="org8323ffd">Bayesian Designs</h2>
+<div class="outline-text-2" id="text-org8323ffd">
 </div>
 </section>
-<section id="slide-org7b5e77c">
-<h3 id="org7b5e77c">Bayesian Decision-making</h3>
+<section id="slide-org928c37a">
+<h3 id="org928c37a">Bayesian Decision-making</h3>
 <ul>
 <li>A typical <i>Yes-No</i> decision \(\underline{P}(\theta > \underline{R}|Data) > \underline{C}\)
 <ul>
@@ -313,8 +337,8 @@ characteristics</i> such as type I and II error rates</li>
 
 </ul>
 </section>
-<section id="slide-orgbaf0666">
-<h3 id="orgbaf0666">Bayesian Approaches in Clinical Trial Design</h3>
+<section id="slide-orgcaa08c4">
+<h3 id="orgcaa08c4">Bayesian Approaches in Clinical Trial Design</h3>
 <ul>
 <li>"Truly" Bayes
 <ul>
@@ -333,12 +357,12 @@ characteristics</i> (e.g., type I and II error)</li>
 
 </ul>
 </section>
-<section id="slide-org6ddb854">
-<h3 id="org6ddb854">Bayesian Design Examples</h3>
-<div class="outline-text-3" id="text-org6ddb854">
+<section id="slide-orgc09d867">
+<h3 id="orgc09d867">Bayesian Design Examples</h3>
+<div class="outline-text-3" id="text-orgc09d867">
 </div>
 <ul class="org-ul">
-<li><a id="org9fabbc4"></a>Phase I studies<br />
+<li><a id="org94a1235"></a>Phase I studies<br />
 <ul>
 <li>Continue reassessment method</li>
 <li>Escalation with overdose control</li>
@@ -347,7 +371,7 @@ characteristics</i> (e.g., type I and II error)</li>
 
 </ul>
 </li>
-<li><a id="org9c08c3f"></a>Phase II studies<br />
+<li><a id="orgd053abf"></a>Phase II studies<br />
 <ul>
 <li>Bayesian continuous monitoring</li>
 <li>Adaptive randomization and dose allocation</li>
@@ -355,7 +379,7 @@ characteristics</i> (e.g., type I and II error)</li>
 
 </ul>
 </li>
-<li><a id="org3843025"></a>Phase III studies<br />
+<li><a id="org85d13b6"></a>Phase III studies<br />
 <ul>
 <li>Phase II/III seamless trials</li>
 <li>Adaptive sample size</li>
@@ -367,13 +391,13 @@ characteristics</i> (e.g., type I and II error)</li>
 </section>
 </section>
 <section>
-<section id="slide-orgdcf1c74">
-<h2 id="orgdcf1c74">Case Studies</h2>
-<div class="outline-text-2" id="text-orgdcf1c74">
+<section id="slide-org9de906d">
+<h2 id="org9de906d">Case Studies</h2>
+<div class="outline-text-2" id="text-org9de906d">
 </div>
 </section>
-<section id="slide-org058b663">
-<h3 id="org058b663">Case I: A Single Arm Study</h3>
+<section id="slide-org0c1a0bb">
+<h3 id="org0c1a0bb">Case I: A Single Arm Study</h3>
 <ul>
 <li>Consider a phase II single-arm cancer study with a sample size of 20 and 15
 responders</li>
@@ -381,8 +405,8 @@ responders</li>
 
 </ul>
 </section>
-<section id="slide-orga6b4381">
-<h3 id="orga6b4381">Case II: A Phase II POC Study</h3>
+<section id="slide-orgd0c6f65">
+<h3 id="orgd0c6f65">Case II: A Phase II POC Study</h3>
 <ul>
 <li>Consider a phase II two-arm POC study</li>
 <li>Experimental arms vs. Cemi+Chemo</li>
@@ -394,13 +418,13 @@ develop the experimental drug</li>
 
 </ul>
 </section>
-<section id="slide-orgda0f448">
-<h3 id="orgda0f448">Case III: Subgroup Analysis</h3>
-<div class="outline-text-3" id="text-orgda0f448">
+<section id="slide-orgb9690e8">
+<h3 id="orgb9690e8">Case III: Subgroup Analysis</h3>
+<div class="outline-text-3" id="text-orgb9690e8">
 </div>
 <ul class="org-ul">
-<li><a id="orgc5bc8ba"></a>Bayesian Hierarchical Models<br />
-<div id="org3fe451d" class="figure">
+<li><a id="org4096292"></a>Bayesian Hierarchical Models<br />
+<div id="org18a2033" class="figure">
 <p><img src="./Figures/Bayesian/bhm.png" alt="bhm.png" height="450px" />
 </p>
 </div>
@@ -414,15 +438,15 @@ information</li>
 </ul>
 
 
-<div id="org33e8d79" class="figure">
+<div id="org99838e2" class="figure">
 <p><img src="./Figures/Bayesian/bhm_2.png" alt="bhm_2.png" height="350px" />
 </p>
 </div>
 </li>
 </ul>
 </section>
-<section id="slide-org036d7cc">
-<h3 id="org036d7cc">Case Study IV: Mixture Prior</h3>
+<section id="slide-org59b3477">
+<h3 id="org59b3477">Case Study IV: Mixture Prior</h3>
 <ul>
 <li>There are already existing studies from which we can draw informed priors for
 designing a new study</li>
@@ -455,13 +479,13 @@ be elicited from experts</li>
 </section>
 <section>
 
-<div id="orgd0b6bdb" class="figure">
+<div id="org3acb842" class="figure">
 <p><img src="./Figures/Bayesian/mixture_prior.png" alt="mixture_prior.png" height="350px" />
 </p>
 </div>
 </section>
-<section id="slide-org9411589">
-<h3 id="org9411589">Case Study V: A Study with a Drop-An-Arm Design</h3>
+<section id="slide-org828875b">
+<h3 id="org828875b">Case Study V: A Study with a Drop-An-Arm Design</h3>
 <ul>
 <li>Consider a study with arms
 <ul>
@@ -501,31 +525,31 @@ Arms B and C</li>
 
 </ul>
 </section>
-<section id="slide-orgd5ee196">
-<h3 id="orgd5ee196">Case Study VI: Leveraging Real-World Data and Real-World Evidence</h3>
+<section id="slide-orga14decd">
+<h3 id="orga14decd">Case Study VI: Leveraging Real-World Data and Real-World Evidence</h3>
 
-<div id="org367f1ea" class="figure">
+<div id="org5af2daf" class="figure">
 <p><img src="./Figures/Bayesian/bayes_rwd.png" alt="bayes_rwd.png" height="500px" />
 </p>
 </div>
 </section>
-<section id="slide-orgbfa1f55">
-<h3 id="orgbfa1f55">Case Study VII: Bayesian Umbrella, Bucket and Platform Trials</h3>
+<section id="slide-org7fa9780">
+<h3 id="org7fa9780">Case Study VII: Bayesian Umbrella, Bucket and Platform Trials</h3>
 
-<div id="org44c980a" class="figure">
+<div id="org820c797" class="figure">
 <p><img src="./Figures/Bayesian/bucket.png" alt="bucket.png" height="500px" />
 </p>
 </div>
 </section>
 </section>
 <section>
-<section id="slide-org3086a00">
-<h2 id="org3086a00">Summary</h2>
-<div class="outline-text-2" id="text-org3086a00">
+<section id="slide-orgd7aa783">
+<h2 id="orgd7aa783">Summary</h2>
+<div class="outline-text-2" id="text-orgd7aa783">
 </div>
 </section>
-<section id="slide-orgcb8359f">
-<h3 id="orgcb8359f">Why Bayesian?</h3>
+<section id="slide-org147f84b">
+<h3 id="org147f84b">Why Bayesian?</h3>
 <ul>
 <li>"Good" reason
 <ul>
@@ -538,18 +562,6 @@ knowledge</i> that is essential for achieving its objectives</li>
 <li>We do not have a valid hypothesis to test</li>
 <li>We do not have adequate knowledge about the treatment</li>
 <li>we lack a suitable criterion for determining the success of the study</li>
-
-</ul></li>
-
-</ul>
-</section>
-<section id="slide-orgcebd6e1">
-<h3 id="orgcebd6e1">Next Session?</h3>
-<ul>
-<li>Focus on phase I study designs
-<ul>
-<li>3+3</li>
-<li>BOIN</li>
 
 </ul></li>
 

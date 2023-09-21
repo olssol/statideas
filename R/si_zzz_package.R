@@ -22,6 +22,7 @@
 #' @importFrom data.table rbindlist
 #' @importFrom rpact getDesignGroupSequential getDesignSet
 #' @importFrom rstan sampling
+#' @importFrom mvtnorm rmvnorm pmvnorm dmvnorm
 #'
 #' @description Demonstrate statistics ideas and concepts through interactive
 #'     Shiny applications.

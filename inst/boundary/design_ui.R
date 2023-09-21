@@ -10,7 +10,9 @@ tab_main <- function() {
                 tab_demo_1(),
                 tab_demo_2(),
                 tab_demo_3(),
-                tab_demo_4()
+                tab_demo_4(),
+                tab_demo_5(),
+                tab_demo_6()
                 )
 }
 
@@ -182,165 +184,220 @@ tab_demo_4 <- function() {
              ))
 }
 
+tab_demo_5 <- function() {
+    tabPanel("Demo V: Alpha Spent At IA",
 
-##-------------------------------------------------------------
-##           UI DATA
-##-------------------------------------------------------------
-get_data_all <- reactive({
+             msg_box("In the Demo, we consider there is only one interim analysis.
+                      We illustrate how alpha spent at the IA affects the nominal
+                      alpha at the final analysis.",
+                     type = "info"),
 
-    input$btnReset2
-    n_rep    <- input$inRep
-    trt_mean <- input$inTrtMean2
-    n_tot    <- input$inN2
+             msg_box("Remark: The same alpha spent at an earlier IA has a bigger
+                     impact at the FA.",
+                     type = "warning"),
 
-    if (any(is.null(c(n_rep, trt_mean, n_tot))))
-        return(NULL)
+             wellPanel(
+                 h4("Specify Design Parameters"),
 
-    rst <- si_bd_simu_all(n_rep,
-                          n_tot    = n_tot,
-                          trt_mean = trt_mean,
-                          n_cores  = parallel::detectCores() - 1)
+                 fluidRow(
+                     column(3,
+                            textInput("inInterFrac5",
+                                      "Interim Analysis Information Fraction",
+                                      value = "0.6, 1")),
+                     column(3,
+                            textInput("inNominalAlpha",
+                                      "Nominal Alpha Level at Each Analysis",
+                                      value = "0.02, NA")),
 
-    rst
-})
+                     column(3,
+                            numericInput("inAlpha5",
+                                         "Total Alpha",
+                                         value = 0.05,
+                                         min   = 0,
+                                         max   = 1,
+                                         step  = 0.005)),
 
-get_data_single <- reactive({
+                     column(3,
+                            numericInput("inPower5",
+                                         "Study Power",
+                                         value = 0.9,
+                                         min   = 0,
+                                         max   = 1,
+                                         step  = 0.005))),
 
-    input$btnReset
-    trt_mean <- input$inTrtMean
-    n_tot    <- input$inN
+                 actionButton("btnCalc5",
+                              "Get Study Design",
+                              width = "150px")
+             ),
 
-    if (is.null(trt_mean) | is.null(n_tot))
-        return(NULL)
+             wellPanel(
+                 tabsetPanel(
+                     tabPanel(
+                         "Study Design",
+                         wellPanel(DTOutput("tblDesn5"))
+                     ),
 
-        rst <- si_bd_simu_trial(n_tot    = n_tot,
-                                trt_mean = trt_mean,
-                                seed     = input$inSeed)
-        si_bd_ana_trial(rst)
-})
+                     tabPanel(
+                         "How Much Alpha Left for Final Analysis?",
+                         wellPanel(
+                             fluidRow(
+                                 column(
+                                     3,
+                                     radioButtons(
+                                         "inRdo5",
+                                         "",
+                                         choices = c("Under Null" = "type1",
+                                                     "Power"      = "power" )
+                                     )),
+                                 column(
+                                     3,
+                                     radioButtons(
+                                         "inRdoAna5",
+                                         "",
+                                         choices = c("Final Analysis Only" = "fa",
+                                                     "At Interim Analysis"  = "ia",
+                                                     "Interim and Final Analysis" = "fia"))
+                                 ),
+                                 column(3,
+                                        uiOutput("uiChkbox5"))
+                             ),
+                             plotOutput("pltout5", height = "600px"),
+                             sliderInput("inLim5",
+                                         "",
+                                         min   = 0.05,
+                                         max   = 1,
+                                         value = 0.25,
+                                         step  = 0.05))
+                     ),
 
-## ---------------demo 1--------------------------------------
+                     tabPanel(
+                         "Alpha at Final Analysis",
+                         fluidRow(
+                             column(3,
+                                    numericInput("inIaAlpha5",
+                                                 "Nominal Alpha at IA",
+                                                 value = 0.02,
+                                                 min = 0, max = 0.05, step = 0.005)),
+                             column(9,
+                                    sliderInput("inIaIf5",
+                                                "Information Fraction at IA",
+                                                value = c(0.05, 0.95),
+                                                min = 0.05, max = 0.95,
+                                                step = 0.05))
+                         ),
 
-## ---------------demo 2--------------------------------------
-get_data_rej <- reactive({
-    dta     <- get_data_all()
-    bds     <- get_bds()
+                         plotlyOutput("pltoutCurve5", height = "600px"))
+                 ))
+)}
 
-    if (is.null(dta) | is.null(bds))
-        return(NULL)
+tab_demo_6 <- function() {
+    tabPanel("Demo VI: Spending Functions",
 
-    si_bd_gs_all(dta, bds$bds)
-})
+             msg_box("In the Demo, we illustrate how different alpha spending
+                      functions differ from each other.",
+                      type = "info"),
 
-get_bds <- reactive({
-    n_interim <- input$inNInterim
-    type      <- input$rdoBd
-    alpha     <- input$inAlpha
+             wellPanel(
+                 h4("Specify Design Parameters"),
+                 fluidRow(
+                     column(3,
+                            checkboxGroupInput(
+                                "chkDesigns6",
+                                "Select Alpha Spending Functions",
+                                choices = c("Pocock Type"          = "asP",
+                                            "O'Brien-Fleming Type" = "asOF",
+                                            "Kim-Demets"           = "asKD",
+                                            "User Defined"         = "asUser"),
+                                selected = c("asOF", "asKD")),
 
-    if (is.null(n_interim) |
-        is.null(type) |
-        is.null(alpha)) {
-        return(list(bds = cbind(0, 1.96)))
-    }
+                            textInput("inInterFrac6",
+                                      "Interim Analysis Information Fraction",
+                                      value = "0.4, 0.6,  0.9")),
 
-    si_bd_get_bd(type, alpha = alpha, n_interim = n_interim)
-})
+                     column(3,
+                            numericInput("inKDgamma6",
+                                         "Kim-Demets Gamma",
+                                         value = 3,
+                                         min   = 0,
+                                         max   = 20,
+                                         step  = 1),
 
+                            textInput("inCumuAlpha6",
+                                      "User Defined: Cumulative Alpha Spending",
+                                      value = "0.01, 0.02, 0.035"),
 
+                            checkboxInput("inGsDes6",
+                                          "Use gsDesign",
+                                          value = FALSE)
+                            ),
 
-## get the maximum rejection rate when no adjustment is taken
-get_alpha_boundary <- reactive({
-    n_interim <- input$inNInterim
-    alpha     <- input$inAlpha
-    dta       <- get_data_all()
+                     column(3,
+                            numericInput("inAlpha6",
+                                         "Total Alpha",
+                                         value = 0.05,
+                                         min   = 0,
+                                         max   = 1,
+                                         step  = 0.005),
 
-    if (is.null(n_interim) |
-        is.null(alpha)     |
-        is.null(dta))
-        return(NULL)
+                            numericInput("inPower6",
+                                         "Study Power",
+                                         value = 0.9,
+                                         min   = 0,
+                                         max   = 1,
+                                         step  = 0.005)
+                            ),
 
-    bds     <- si_bd_get_bd("NO", alpha = alpha, n_interim = n_interim)
-    rej     <- si_bd_gs_all(dta, bds$bds)
-    rej_sum <- si_bd_sum_rep(rej)
+                     column(3,
+                            numericInput("inSample6",
+                                         "Study Sample Size",
+                                         value = 500),
 
-    max(rej_sum$rej_wide$prop_cum_rej)
-})
+                            numericInput("inEnrollRate6",
+                                         "Enrollment Rate (per Month)",
+                                         value = 20),
 
-get_summary_rej <- reactive({
-    dat_rej <- get_data_rej()
+                            numericInput("inMinFu6",
+                                         "Minimum Follow-up Months",
+                                         value = 6)
+                            )),
 
-    if (is.null(dat_rej))
-        return(NULL)
+                 actionButton("btnAdd6",
+                              "Add Study Design",
+                              width = "150px"),
 
-    rst <- si_bd_sum_rep(dat_rej)
-    rst
-})
+                 actionButton("btnReset6",
+                              "Reset",
+                              width = "150px")
 
-get_sel <- reactive({
-    input$btnReset2
-    sel   <- input$inNSel
-    n_rep <- input$inRep
+             ),
 
-    if (is.null(sel) | sel <= 0)
-        sel <- n_rep
+             wellPanel(
+                 tabsetPanel(
+                     tabPanel(
+                         "Study Design",
+                         wellPanel(DTOutput("tblDesn6"))
+                     ),
 
-    sample(n_rep, min(sel, n_rep))
-})
+                     tabPanel(
+                         "Resource Saved",
+                         wellPanel(DTOutput("tblOut6"))
+                     ),
 
-
-observeEvent(input$btnAdd, {
-    if (0 == input$btnAdd |
-        is.null(input$inInc))
-        return(NULL)
-
-    userLog$n_first <- userLog$n_first + input$inInc
-})
-
-observeEvent(input$btnReset, {
-    if (0 == input$btnReset)
-        return(NULL)
-
-    userLog$n_first <- 1
-})
-
-## alpha level
-get_alpha <- reactive({
-    if (is.null(input$inAlpha))
-        return(0.025)
-
-   input$inAlpha
-})
-
-## --------------demo 4: alpha spending --------------------------
-get_data_rej_as <- reactive({
-    dta     <- get_data_all()
-    bds     <- get_bds_as()
-
-    if (is.null(dta) | is.null(bds))
-        return(NULL)
-
-    si_bd_gs_all(dta, bds$bds)
-})
-
-get_bds_as <- reactive({
-    info_frac <- tkt_assign(input$inInterFrac)
-    type      <- input$rdoASBd
-    alpha     <- get_alpha()
-
-    if (is.null(info_frac) |
-        is.null(type) |
-        is.null(alpha)) {
-        return(list(bds = cbind(0, 1.96)))
-    }
-
-    si_bd_get_bd(type, alpha = alpha, info_frac = info_frac)
-})
-
-get_summary_rej_as <- reactive({
-    dat_rej <- get_data_rej_as()
-
-    if (is.null(dat_rej))
-        return(NULL)
-
-    si_bd_sum_rep(dat_rej)
-})
+                     tabPanel(
+                         "Illustration",
+                         wellPanel(
+                             radioButtons(
+                                 "inRdo6",
+                                 "",
+                                 choices = c(
+                                     "Nominal Alpha Spent",
+                                     "Cumulative Alpha Spent",
+                                     "Cumulative Power",
+                                     "Z-score Boundary",
+                                     "MDD"
+                                 )),
+                             plotlyOutput("pltout6", height = "600px")
+                         )
+                     )
+             )))
+}

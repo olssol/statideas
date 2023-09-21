@@ -4,7 +4,7 @@
 \alias{fun_kernel_density}
 \title{Function}
 \usage{
-fun_kernel_density(x, cut, xlab_name, para_notation, percent)
+fun_kernel_density(x, cut, xlab_name, para_notation, percent, from, to)
 }
 \description{
 Function

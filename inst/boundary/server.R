@@ -1,9 +1,11 @@
 shinyServer(function(input, output, session) {
 
-    source("design_ui.R", local = TRUE)
+    source("design_ui.R",      local = TRUE)
+    source("design_ui_data.R", local = TRUE)
 
-    userLog         <- reactiveValues()
-    userLog$n_first <- 1
+    userLog            <- reactiveValues()
+    userLog$n_first    <- 1
+    userLog$all_design <- list()
 
     ##--------------------------------------
     ##---------main-------------------------
@@ -147,6 +149,103 @@ shinyServer(function(input, output, session) {
     output$txtASBd <- renderPrint({
         details <- get_bds_as()
         print(details)
+    })
+
+    ## ---------------------------------------------------
+    ##            DEMO 5: User Defined Design
+    ## ---------------------------------------------------
+    output$tblDesn5 <- renderDataTable({
+        rst <- get_design_5()
+
+        if (is.null(rst))
+            return(NULL)
+
+        rst <- rst %>%
+            select(-inx, -study_alpha, -study_power,
+                   -nominal_alpha_left) %>%
+            mutate(nominal_alpha    = 2 * nominal_alpha,
+                   ia_alpha_spent   = 2 * ia_alpha_spent,
+                   cumu_alpha_spent = 2 * cumu_alpha_spent) %>%
+            set_gsd_tbl()
+
+        rst
+
+    }, options = list(dom = 't'))
+
+    output$pltout5 <- renderPlot({
+        get_design_plot_5()
+    }, height = 600)
+
+    output$pltoutCurve5 <- renderPlotly({
+        rst <- get_curve_plot_5()
+        ggplotly(rst, tooltip = c("text"))
+    })
+
+    output$uiChkbox5 <- renderUI({
+        dta <- get_design_plot_data_5()
+
+        if (is.null(dta)) {
+            return(NULL)
+        }
+
+        choices <- unique(dta$Rejection2)
+
+        checkboxGroupInput("inChkbox5",
+                           "",
+                           choices = choices,
+                           selected = choices)
+    })
+
+    ## ---------------------------------------------------
+    ##            DEMO 6: User Defined Design
+    ## ---------------------------------------------------
+    output$tblDesn6 <- renderDataTable({
+        rst <- userLog$all_design$design
+
+        if (is.null(rst))
+            return(NULL)
+
+        rst <- rst %>%
+            select(-inx, -study_alpha, -study_power,
+                   -nominal_alpha_left) %>%
+            set_gsd_tbl(pre_col = "Design")
+
+        rst
+    }, options = list(dom = "t", pageLength = 100))
+
+    output$tblOut6 <- renderDataTable({
+        rst <- userLog$all_design$outcome
+
+        if (is.null(rst))
+            return(NULL)
+
+        rst <- rst %>%
+            mutate(
+                across(
+                    c("expected_duration",
+                      "expected_samplesize",
+                      "saved_duration",
+                      "saved_sample",
+                      "power"),
+                    ~ format(round(.x, digits = 2),
+                             nsmall = 2)))
+
+        colnames(rst) <- c("Design",
+                           "Expected Duration (Months)",
+                           "Expected Sample Size",
+                           "Expected Saved Duration (%)",
+                           "Expected Saved Sample (%)",
+                           "Power")
+
+        rst
+    }, options = list(dom = "t"))
+
+    output$pltout6 <- renderPlotly({
+        rst <- get_design_plot_6()
+        if (is.null(rst))
+            return(NULL)
+
+        ggplotly(rst, tooltip = "text")
     })
 
 })
