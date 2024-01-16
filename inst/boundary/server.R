@@ -172,9 +172,16 @@ shinyServer(function(input, output, session) {
 
     }, options = list(dom = 't'))
 
-    output$pltout5 <- renderPlot({
-        get_design_plot_5()
-    }, height = 600)
+    output$pltout5 <- renderPlotly({
+
+        rst <- get_design_plot_5()
+
+        if (is.null(rst)) {
+            return(NULL)
+        }
+
+        ggplotly(rst, tooltip = "text")
+    })
 
     output$pltoutCurve5 <- renderPlotly({
         rst <- get_curve_plot_5()

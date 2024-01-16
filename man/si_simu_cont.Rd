@@ -4,7 +4,7 @@
 \alias{si_simu_cont}
 \title{Simulate Continuous Outcome}
 \usage{
-si_simu_cont(ntot, mean = 0, sd = 1)
+si_simu_cont(ntot, mean = 0, sd = 1, seed = NULL)
 }
 \description{
 Simulate Continuous Outcome

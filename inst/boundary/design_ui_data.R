@@ -214,9 +214,9 @@ get_design_5 <- reactive({
     alpha      <- isolate(as.numeric(input$inAlpha5) / 2)
     power      <- isolate(as.numeric(input$inPower5))
     rst        <- stb_tl_gsd_solve(info_fracs = info_fracs,
-                                           boundary   = boundary,
-                                           alpha      = alpha,
-                                           power      = power)
+                                   boundary   = boundary,
+                                   alpha      = alpha,
+                                   power      = power)
 
     rst
 })
@@ -247,12 +247,13 @@ get_design_plot_data_5 <- reactive({
                             alpha      = alpha,
                             power      = power)
 
-    nsmp <- 100000
+    nsmp <- input$inNtrial
     smps <- rmvnorm(n = nsmp, mean = m, sigma = sig)
     smps <- 1 - pnorm(smps)
 
     col   <- rep(NA,  nsmp)
     col2  <- rep(NA,  nsmp)
+
     if ("fa" == without_ia) {
         inx       <- which(smps[, 2] < alpha2)
         col2[inx] <- "Rejected at Final When No IA"
@@ -269,7 +270,7 @@ get_design_plot_data_5 <- reactive({
                           round(length(inx) / nsmp, 3),
                           ")",
                           sep = "")
-    } else {
+    } else if ("fia" == without_ia) {
         inx <- which(smps[, 1] < boundary[1] &
                      smps[, 2] > alpha2)
 
@@ -291,13 +292,25 @@ get_design_plot_data_5 <- reactive({
                           ")",
                           sep = "")
 
-        inx <- which(smps[, 2] < boundary[2])
-        col2[inx] <- "Rejected: Anyway"
-        col[inx] <- paste("Rejected: Anyway (n = ",
-                          length(inx), ", % = ",
-                          round(length(inx) / nsmp, 3),
-                          ")",
-                          sep = "")
+        inx <- which(smps[, 1] > boundary[1] &
+                     smps[, 2] < boundary[2])
+
+        col2[inx] <- "Rejected: Only at FA"
+        col[inx]  <- paste("Rejected: Only at FA (n = ",
+                           length(inx), ", % = ",
+                           round(length(inx) / nsmp, 3),
+                           ")",
+                           sep = "")
+
+        inx <- which(smps[, 1] < boundary[1] &
+                     smps[, 2] < boundary[2])
+
+        col2[inx] <- "Rejected: At Both IA and FA"
+        col[inx]  <- paste("Rejected: At Both IA and FA (n = ",
+                           length(inx), ", % = ",
+                           round(length(inx) / nsmp, 3),
+                           ")",
+                           sep = "")
 
         inx <- which(smps[, 1] < boundary[1] &
                      smps[, 2] > boundary[2] &
@@ -308,6 +321,36 @@ get_design_plot_data_5 <- reactive({
                           round(length(inx) / nsmp, 3),
                           ")",
                           sep = "")
+    } else {
+        inx <- which(smps[, 1] < boundary[1] &
+                     smps[, 2] > alpha2 - boundary[1])
+
+        col2[inx] <- "Rejected: Only With IA"
+        col[inx]  <- paste("Rejected: Only With IA (n = ",
+                           length(inx), ", % = ",
+                           round(length(inx) / nsmp, 3),
+                           ")",
+                           sep = "")
+
+        inx <- which(smps[, 1] > boundary[1] &
+                     smps[, 2] < alpha2 - boundary[1])
+
+        col2[inx] <- "Rejected: Only at FA "
+        col[inx]  <- paste("Rejected: Only at FA (n = ",
+                           length(inx), ", % = ",
+                           round(length(inx) / nsmp, 3),
+                           ")",
+                           sep = "")
+
+        inx <- which(smps[, 1] < boundary[1] &
+                     smps[, 2] < alpha2 - boundary[1])
+
+        col2[inx] <- "Rejected: At Both IA and FA"
+        col[inx]  <- paste("Rejected: At Both IA and FA (n = ",
+                           length(inx), ", % = ",
+                           round(length(inx) / nsmp, 3),
+                           ")",
+                           sep = "")
     }
 
     inx       <- which(is.na(col))
@@ -322,7 +365,9 @@ get_design_plot_data_5 <- reactive({
         z1         = smps[, 1],
         z2         = smps[, 2],
         Rejection  = col2,
-        Rejection2 = col)
+        Rejection2 = col) %>%
+        mutate(text = paste("P-value at IA:", round(z1, 2),
+                            "\n P-value at FA:", round(z2, 2)))
 
 })
 
@@ -347,46 +392,74 @@ get_design_plot_5 <- reactive({
     boundary   <- 2 * (1 - pnorm(boundary))
     without_ia <- input$inRdoAna5
 
+    dta_filter <- dta
     if (!is.null(input$inChkbox5)) {
-        dta <- dta %>%
+        dta_filter <- dta_filter %>%
             filter(Rejection2 %in% input$inChkbox5)
     }
 
-    rst <- ggplot(data = dta, aes(x = z1, y = z2)) +
-        geom_point(aes(color = Rejection)) +
-        geom_hline(yintercept = alpha2, lty = 2, lwd = 2, col = "black") +
+    rst <- ggplot(data = dta_filter, aes(x = z1, y = z2))
+    if (nrow(dta) <= 1000) {
+        rst <- rst +
+            geom_point(aes(color = Rejection, text = text))
+    } else {
+        rst <- rst +
+            geom_point(aes(color = Rejection))
+    }
+
+    rst <- rst +
         xlim(0, input$inLim5) +
         ylim(0, input$inLim5) +
-        labs(x = "Interim Analysis Alpha", y = "Final Analysis Alpha") +
+        labs(x = "Interim Analysis P-value", y = "Final Analysis P-value") +
         theme_bw() +
-        theme(text = element_text(size = 20)) +
+        ## theme(text = element_text(size = 20)) +
         scale_color_manual(values = c("Fail to Reject"         = "gray",
                                       "Rejected: Only With IA" = "green",
-                                      "Rejected: Anyway"       = "brown",
+                                      "Rejected: Only at FA"   = "brown",
+                                      "Rejected: At Both IA and FA" = "blue",
                                       "Rejected: Now at IA"    = "purple",
                                       "Fail to Reject With IA" = "gray30",
                                       "Rejected at IA"         = "cyan",
                                       "Rejected at Final When No IA" = "yellow"
                                       ))
 
-
     if ("fia" == without_ia) {
         rst <- rst +
             geom_vline(xintercept = boundary[1],
                        lty = 2,
-                       lwd = 2,
+                       lwd = 1,
                        col = "red") +
             geom_hline(yintercept = boundary[2],
                        lty = 2,
-                       lwd = 2,
-                       col = "red")
+                       lwd = 1,
+                       col = "red") +
+            geom_hline(yintercept = alpha2 - boundary[1],
+                       lty = 2,
+                       lwd = 1,
+                       col = "gray")
     } else if ("ia" == without_ia) {
         rst <- rst +
             geom_vline(xintercept = boundary[1],
                        lty = 2,
-                       lwd = 2,
+                       lwd = 1,
                        col = "red")
+    } else if ("nfia" == without_ia) {
+        rst <- rst +
+            geom_vline(xintercept = boundary[1],
+                       lty = 2,
+                       lwd = 1,
+                       col = "red") +
+        geom_hline(yintercept = alpha2 - boundary[1],
+                   lty = 2,
+                   lwd = 1,
+                   col = "gray")
     }
+
+    rst <- rst +
+        geom_hline(yintercept = alpha2,
+                   lty = 2,
+                   lwd = 1,
+                   col = "black")
 
     rst
 })

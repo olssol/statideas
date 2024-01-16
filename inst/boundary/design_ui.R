@@ -188,8 +188,11 @@ tab_demo_5 <- function() {
     tabPanel("Demo V: Alpha Spent At IA",
 
              msg_box("In the Demo, we consider there is only one interim analysis.
-                      We illustrate how alpha spent at the IA affects the nominal
-                      alpha at the final analysis.",
+                      We illustrate the following points: <ol>
+                      <li>What is alpha spending?</li>
+                      <li>Why doesn't 1+1 equal 2?</li>
+                      <li>Why does the same alpha spent at different time cost differently?</li>
+                      </ol>",
                      type = "info"),
 
              msg_box("Remark: The same alpha spent at an earlier IA has a bigger
@@ -207,7 +210,7 @@ tab_demo_5 <- function() {
                      column(3,
                             textInput("inNominalAlpha",
                                       "Nominal Alpha Level at Each Analysis",
-                                      value = "0.02, NA")),
+                                      value = "0.025, NA")),
 
                      column(3,
                             numericInput("inAlpha5",
@@ -234,39 +237,44 @@ tab_demo_5 <- function() {
                  tabsetPanel(
                      tabPanel(
                          "Study Design",
-                         wellPanel(DTOutput("tblDesn5"))
-                     ),
-
-                     tabPanel(
-                         "How Much Alpha Left for Final Analysis?",
+                         wellPanel(DTOutput("tblDesn5")),
                          wellPanel(
                              fluidRow(
                                  column(
                                      3,
-                                     radioButtons(
-                                         "inRdo5",
-                                         "",
-                                         choices = c("Under Null" = "type1",
-                                                     "Power"      = "power" )
-                                     )),
+                                     numericInput("inNtrial",
+                                                  "Number of Trials",
+                                                  value = 1000,
+                                                  min   = 100)),
                                  column(
                                      3,
                                      radioButtons(
                                          "inRdoAna5",
                                          "",
-                                         choices = c("Final Analysis Only" = "fa",
-                                                     "At Interim Analysis"  = "ia",
-                                                     "Interim and Final Analysis" = "fia"))
+                                         choices =
+                                             c("Final Analysis Only"  = "fa",
+                                               "At Interim Analysis"  = "ia",
+                                               "Interim and Naive Final Analysis" = "nfia",
+                                               "Interim and Final Analysis" = "fia"))
                                  ),
+
                                  column(3,
-                                        uiOutput("uiChkbox5"))
+                                        uiOutput("uiChkbox5")),
+                                 column(3,
+                                        radioButtons(
+                                            "inRdo5",
+                                            "",
+                                            choices = c("Under Null" = "type1",
+                                                        "Power"      = "power" )
+                                        ))
                              ),
-                             plotOutput("pltout5", height = "600px"),
+
+                             plotlyOutput("pltout5", height = "600px"),
                              sliderInput("inLim5",
                                          "",
                                          min   = 0.05,
                                          max   = 1,
-                                         value = 0.25,
+                                         value = 1,
                                          step  = 0.05))
                      ),
 
@@ -277,7 +285,9 @@ tab_demo_5 <- function() {
                                     numericInput("inIaAlpha5",
                                                  "Nominal Alpha at IA",
                                                  value = 0.02,
-                                                 min = 0, max = 0.05, step = 0.005)),
+                                                 min = 0,
+                                                 max = 0.05,
+                                                 step = 0.005)),
                              column(9,
                                     sliderInput("inIaIf5",
                                                 "Information Fraction at IA",
@@ -312,7 +322,7 @@ tab_demo_6 <- function() {
 
                             textInput("inInterFrac6",
                                       "Interim Analysis Information Fraction",
-                                      value = "0.4, 0.6,  0.9")),
+                                      value = "0.5, 0.6, 0.7, 0.8, 0.9")),
 
                      column(3,
                             numericInput("inKDgamma6",
@@ -324,7 +334,7 @@ tab_demo_6 <- function() {
 
                             textInput("inCumuAlpha6",
                                       "User Defined: Cumulative Alpha Spending",
-                                      value = "0.01, 0.02, 0.035"),
+                                      value = "0.005, 0.01, 0.015, 0.02, 0.035"),
 
                             checkboxInput("inGsDes6",
                                           "Use gsDesign",
