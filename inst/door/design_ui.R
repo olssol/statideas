@@ -34,7 +34,7 @@ tab_setting <- function() {
                      column(3,
                             numericInput("inSize",
                                          "Sample Size Per Arm",
-                                         value = 50,
+                                         value = 20,
                                          min = 5, max = 1000, step = 5),
 
                             numericInput("inNOutcome",
@@ -65,14 +65,18 @@ tab_setting <- function() {
                             conditionalPanel(
                                 condition = "input.inOutType == 'Continuous'",
                                 numericInput("inSD",
-                                             "Control Arm Mean",
+                                             "SD",
                                              value = 1, min = 0),
                                 numericInput("inDelta",
                                              "Delta for DOOR",
                                              value = 0)),
                             actionButton("inBtnSave", "Save")),
                      column(3)
-                 ))
+                 )),
+             wellPanel(
+                 h4("Current Endpoints"),
+                 DT::dataTableOutput("tblEndpoint")
+             )
              )
 }
 
@@ -104,9 +108,9 @@ tab_door <- function() {
              wellPanel(
                  h4("DOOR Comparison"),
                  DT::dataTableOutput("tblDoorComp")),
-             wellPanel(
-                 h4("DOOR Bootstrap"),
-                 DT::dataTableOutput("tblDoorBS")),
+             ## wellPanel(
+             ##     h4("DOOR Bootstrap"),
+             ##     DT::dataTableOutput("tblDoorBS")),
              wellPanel(
                  h4("Analysis Results"),
                  DT::dataTableOutput("tblAnaTypical"))
@@ -185,7 +189,6 @@ observeEvent(input$inBtnSave, {
                     name     = input$inOutName)
 
     userLog$outcomes[[cur_inx]] <- cur_val
-
     shinyjs::disable(id = "inBtnSave")
 })
 
@@ -221,6 +224,10 @@ observeEvent(input$inOutInx, {
     updateTextInput(inputId  = "inDelta",
                     value    = cur_out$delta)
 
+})
+
+get_tbl_endpoint <- reactive({
+    si_door_outcomes_to_table(userLog$outcomes)
 })
 
 ##-------------------------------------------------------------
@@ -292,8 +299,9 @@ get_door_bs <- reactive({
         return(NULL)
     }
 
-    rst <- si_door_rank_bs(dta_trt, dta_ctl, userLog$outcomes) %>%
-        mutate(stat = sum - (n_trt * n_ctl / 2))
+    rst <- si_door_rank_bs(dta_trt, dta_ctl, userLog$outcomes)
+    rst <- rst %>%
+        mutate(stat = sum / n_trt - n_ctl / 2)
 
     estimate <- rst[1, "stat"]
     sd_est   <- sd(rst$stat)

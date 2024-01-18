@@ -112,7 +112,7 @@ si_door_ana <- function(dta, lst_outcomes) {
     if (!is.null(dta$Any_Binary)) {
         cur_dta     <- dta
         cur_dta$y   <- cur_dta$Any_Binary
-        cur_rst     <- si_ana_ttest(cur_dta)
+        cur_rst     <- si_ana_fisher(cur_dta)
         cur_rst     <- cbind(Outcome = "Any Binary", cur_rst)
         rst         <- rbind(rst, cur_rst)
     }
@@ -244,7 +244,7 @@ si_door_rank_bs <- function(dta_trt, dta_ctl, lst_outcomes,
                                  inx_trt <- sample(seq_len(nrow(cur_trt)),
                                                    replace = TRUE)
                                  inx_ctl <- sample(seq_len(nrow(cur_ctl)),
-                                                   replace = FALSE)
+                                                   replace = TRUE)
 
                                  cur_trt <- cur_trt[inx_trt, ]
                                  cur_ctl <- cur_trt[inx_ctl, ]
@@ -268,4 +268,40 @@ si_door_rank_bs <- function(dta_trt, dta_ctl, lst_outcomes,
 
     rst <- t(simplify2array(rst))
     data.frame(rst)
+}
+
+
+#' Organize outcome list to table
+#'
+#'
+#' @export
+#'
+si_door_outcomes_to_table <- function(lst_outcomes) {
+
+    if (is.null(lst_outcomes))
+        return(NULL)
+
+    if (0 == length(lst_outcomes)) {
+        return(NULL)
+    }
+
+    rst <- NULL
+    for (i in seq_len(length(lst_outcomes))) {
+        cur_o   <- lst_outcomes[[i]]
+        cur_rst <- data.frame(Name           = cur_o$name,
+                              Type           = cur_o$type,
+                              Mean_Treatment = cur_o$mean_trt,
+                              Mean_Control   = cur_o$mean_ctl,
+                              SD             = cur_o$sd,
+                              Delta          = cur_o$delta)
+
+        if ("Binary" == cur_o$type) {
+            cur_rst[1, "SD"]    <- NA
+            cur_rst[1, "Delta"] <- NA
+        }
+
+        rst <- rbind(rst, cur_rst)
+    }
+
+    rst
 }

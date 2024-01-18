@@ -33,6 +33,14 @@ shinyServer(function(input, output, session) {
     observeEvent(input$close, {
         stopApp()})
 
+
+    ##--------------------------------------
+    ##---------setting----------------------
+    ##--------------------------------------
+    output$tblEndpoint <- DT::renderDataTable({
+        get_tbl_endpoint()
+    }, options = list(dom = 't'))
+
     ##--------------------------------------
     ##---------data-------------------------
     ##--------------------------------------
@@ -67,11 +75,11 @@ shinyServer(function(input, output, session) {
             rst_2 <- rst_2$door
 
         rbind(rst_1, rst_2)
-    }, options = list())
+    }, options = list(dom = 't'))
 
     output$tblDoorComp <- DT::renderDataTable({
         get_door_comparison()
-    }, options = list())
+    }, options = list(dom = 't'))
 
     output$tblDoorBS <- DT::renderDataTable({
         rst <- get_door_bs()
@@ -80,6 +88,6 @@ shinyServer(function(input, output, session) {
             rst <- rst$bs
 
         rst
-    }, options = list())
+    }, options = list(dom = "t"))
 
 })
