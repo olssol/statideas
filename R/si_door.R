@@ -196,10 +196,9 @@ si_door_rank <- function(dta_trt, dta_ctl, lst_outcomes) {
     for (i in seq_len(nrow(dta_trt))) {
         dta_a   <- dta_trt[i, ]
         cur_rst <- 0
-        for (j in nrow(dta_ctl):1) {
+        for (j in seq_len(nrow(dta_ctl))) {
             dta_b <- dta_ctl[j, ]
             tmp   <- si_door_rank_single(dta_a, dta_b, lst_outcomes)$rank
-
             if ("Tie" == tmp) {
                 cur_rst <- cur_rst + 0.5
             } else if ("Better" == tmp) {
@@ -208,7 +207,6 @@ si_door_rank <- function(dta_trt, dta_ctl, lst_outcomes) {
                 break
             }
         }
-
         rst <- c(rst, cur_rst)
     }
 
