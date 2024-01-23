@@ -16,7 +16,8 @@
 #' @export
 #'
 om_rejection <- function(weights, mat_g, p_values, alpha = 0.05,
-                         utility = 1, null_h = NULL) {
+                         utility = 1,
+                         null_h = NULL) {
 
     ## apply algorithm
     rej <- c_mtp(p_values,
