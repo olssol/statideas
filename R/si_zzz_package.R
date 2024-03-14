@@ -26,6 +26,7 @@
 #'
 #' @importFrom rstan sampling
 #' @importFrom mvtnorm rmvnorm pmvnorm dmvnorm
+#' @importFrom GGally ggpairs
 #'
 #' @description Demonstrate statistics ideas and concepts through interactive
 #'     Shiny applications.

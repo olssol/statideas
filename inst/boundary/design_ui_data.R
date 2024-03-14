@@ -573,10 +573,12 @@ get_design_6 <- reactive({
         }
 
         cur_out <- stb_tl_gsd_outcome(cur_rst$info_frac,
-                                              cur_rst$ia_power,
-                                              n           = n,
-                                              enroll_rate = enroll_rate,
-                                              min_fu      = min_fu)
+            cur_rst$ia_power,
+            n           = n,
+            enroll_rate = enroll_rate,
+            min_fu      = min_fu
+        )
+
         ## append
         rst     <- rbind(rst,
                          cbind(design = cur_dsgn, cur_rst))
@@ -669,4 +671,128 @@ observeEvent(input$btnAdd6, {
 
     userLog$all_design <- list(design  = cur_design,
                                outcome =  cur_outcome)
+})
+
+## --------------demo 7--------------------------
+
+## generate joint zscores
+observeEvent(input$btnGen7, {
+    info_fracs <- tkt_assign(input$inInterFrac7)
+    n_ana      <- length(info_fracs)
+    userLog$data_7 <- stb_tl_gsd_simu(
+        info_fracs = info_fracs,
+        n = input$inRep7,
+        theta = -input$inEff7
+    )
+})
+
+get_plt7_data <- reactive({
+    dta <- userLog$data_7
+
+    if (is.null(dta))
+        return(NULL)
+
+    n_ana <- (ncol(dta) - 1) / 2
+    rst   <- NULL
+    for (i in seq_len(n_ana)) {
+        pval_ <- dta[, paste("pval", i, sep = "")]
+        if (i == n_ana) {
+            ana_ <- paste("(", i, ") ", "Final Analysis", sep = "")
+        } else {
+            ana_ <- paste("(", i, ") ", "Interim Analysis", sep = "")
+        }
+
+        cur_rst <- dta %>%
+            select(id) %>%
+            mutate(inx  = i,
+                   ana  = ana_,
+                   pval = pval_) %>%
+            arrange(pval) %>%
+            mutate(x  = row_number(),
+                   y0 = 1,
+                   y  = jitter(y0))
+
+        rst <- rbind(rst, cur_rst)
+    }
+
+    rst
+})
+
+get_plt7_pvals <- reactive({
+
+    dta <- get_plt7_data()
+
+    if (is.null(dta))
+        return(NULL)
+
+    in_alpha <- tkt_assign(input$inNominalAlpha7)
+    n_ana    <- max(dta$inx)
+    in_alpha <- rep(in_alpha, length.out = n_ana)
+
+    if (input$inShowRej7 & input$inHide7) {
+        rej_id <- NULL
+        rst <- NULL
+        for (i in seq_len(n_ana)) {
+            cur_rst <- dta %>%
+                filter(inx == i)
+
+            if (!is.null(rej_id)) {
+                cur_rst <- cur_rst %>%
+                    filter(!(id %in% rej_id))
+            }
+
+            rej <- cur_rst %>%
+                filter(pval < in_alpha[i])
+
+            if (nrow(rej) > 0) {
+                rej_id <- c(rej_id, rej$id)
+            }
+
+            rst <- rbind(rst, cur_rst)
+        }
+
+        dta <- rst
+    }
+
+    dta$alpha <- in_alpha[dta$inx]
+
+    dta_rej   <- dta %>%
+        mutate(rej = (pval < alpha)) %>%
+        group_by(ana) %>%
+        summarize(N_Rej = sum(rej)) %>%
+        mutate(Cumu_Rej = cumsum(N_Rej))
+
+    dta_rej$alpha <- in_alpha
+
+    if (input$inHide7) {
+        dta_rej <- dta_rej %>%
+            mutate(RText = paste("#Rejecion =", N_Rej,
+                                 "/", Cumu_Rej))
+    } else {
+        dta_rej <- dta_rej %>%
+            mutate(RText = paste("#Rejecion =", N_Rej))
+    }
+
+    rst <- ggplot(data = dta, aes(x = pval, y = y)) +
+        geom_point(aes(color = id)) +
+        facet_wrap(~ana, ncol = 1) +
+        theme_bw() +
+        labs(x = "p-values", y = "") +
+        ylim(0.7, 1.3) +
+        xlim(0, input$inLim7) +
+        scale_color_gradientn(colours = rainbow(7))
+
+    if (input$inShowRej7) {
+        rst <- rst +
+            geom_text(
+                data = dta_rej, aes(label = RText),
+                x = in_alpha / 2, y = 1, angle = 90,
+                size = 6, col = "gray"
+            ) +
+            geom_vline(data = dta_rej,
+                       aes(xintercept = alpha),
+                       lty = 2, col = "red")
+    }
+
+    rst
 })

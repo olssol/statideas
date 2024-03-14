@@ -2,17 +2,22 @@
 ##           UI FUNCTIONS
 ##-------------------------------------------------------------
 
+linebreaks <- function(n) {
+    HTML(strrep(br(), n))
+}
+
 ##define the main tabset for beans
 tab_main <- function() {
     tabsetPanel(type = "pills",
                 id   = "mainpanel",
                 tab_slides(),
-                tab_demo_1(),
-                tab_demo_2(),
-                tab_demo_3(),
-                tab_demo_4(),
+                tab_demo_7(),
                 tab_demo_5(),
-                tab_demo_6()
+                tab_demo_3(),
+                tab_demo_6(),
+                tab_demo_4(),
+                tab_demo_1(),
+                tab_demo_2()
                 )
 }
 
@@ -132,7 +137,7 @@ tab_demo_2 <- function() {
 }
 
 tab_demo_3 <- function() {
-    tabPanel("Demo III",
+    tabPanel("Alpha Spending Functions (Shapes)",
              fluidRow(
                  column(4,
                         numericInput("inNInterim2",
@@ -161,7 +166,7 @@ tab_demo_3 <- function() {
 }
 
 tab_demo_4 <- function() {
-    tabPanel("Demo IV",
+    tabPanel("Alpha Spending Functions (Demo)",
              fluidRow(
                  column(4,
                         textInput("inInterFrac",
@@ -185,7 +190,7 @@ tab_demo_4 <- function() {
 }
 
 tab_demo_5 <- function() {
-    tabPanel("Demo V: Alpha Spent At IA",
+    tabPanel("Alpha Spent At IA",
 
              msg_box("In the Demo, we consider there is only one interim analysis.
                       We illustrate the following points: <ol>
@@ -301,7 +306,7 @@ tab_demo_5 <- function() {
 )}
 
 tab_demo_6 <- function() {
-    tabPanel("Demo VI: Spending Functions",
+    tabPanel("Design Studies",
 
              msg_box("In the Demo, we illustrate how different alpha spending
                       functions differ from each other.",
@@ -410,4 +415,64 @@ tab_demo_6 <- function() {
                          )
                      )
              )))
+}
+
+tab_demo_7 <- function() {
+    tabPanel(
+        "An RCT with IA",
+        fluidRow(
+            column(
+                4,
+                numericInput("inRep7",
+                    "Number of Trials",
+                    value = 10000,
+                    min   = 200
+                    ),
+                numericInput("inEff7",
+                    "Treatment Effect",
+                    value = 0
+                    ),
+                textInput("inInterFrac7",
+                    "Interim Analysis Information Fraction",
+                    value = "1"
+                    ),
+                actionButton("btnGen7",
+                    "Generate",
+                    width = "120px"
+                    ),
+                linebreaks(2),
+                textInput("inNominalAlpha7",
+                    "Nominal",
+                    value = "0.05"
+                    ),
+                checkboxInput("inShowRej7",
+                    "Show Rejection",
+                    value = FALSE
+                ),
+                checkboxInput("inHide7",
+                    "Hide Already Rejected Cases",
+                    value = FALSE
+                )
+            ),
+
+            column(
+                8,
+                tabsetPanel(
+                    tabPanel("P-Values",
+                             plotOutput("pltout7Pvals", height = "600px"),
+                             sliderInput("inLim7",
+                                         "",
+                                         min   = 0.05,
+                                         max   = 1,
+                                         value = 1,
+                                         step  = 0.05,
+                                         width = "100%")),
+                    tabPanel(
+                        "Correlations",
+                        plotOutput("pltout7Pairs", height = "600px")
+                    )
+                )
+            )
+        )
+    )
 }

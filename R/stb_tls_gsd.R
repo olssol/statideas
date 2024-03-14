@@ -450,3 +450,28 @@ stb_tl_gsd_outcome <- function(info_fracs, ia_power, ...) {
       (rst_tot - rst) / rst_tot,
       sum(ia_power))
 }
+
+#' GSD Simulate Joint Z-Scores
+#'
+#'
+#' @export
+#'
+stb_tl_gsd_simu <- function(info_fracs = 1, theta = 0, n = 1000) {
+    cov_mat <- stb_tl_gsd_cov(info_fracs)
+    z_mean <- theta * sqrt(info_fracs)
+
+    rst_z <- rmvnorm(n, mean = z_mean, sigma = cov_mat)
+    rst_pval <- pnorm(rst_z)
+    rst <- cbind(rst_z, rst_pval)
+
+    n_test <- length(info_fracs)
+
+    colnames(rst) <- c(
+        paste("z", seq_len(n_test), sep = ""),
+        paste("pval", seq_len(n_test), sep = "")
+    )
+
+    data.frame(rst) %>%
+        arrange(z1) %>%
+        mutate(id = seq_len(n))
+}

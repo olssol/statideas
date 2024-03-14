@@ -1,25 +1,26 @@
 shinyServer(function(input, output, session) {
-
-    source("design_ui.R",      local = TRUE)
+    source("design_ui.R", local = TRUE)
     source("design_ui_data.R", local = TRUE)
 
-    userLog            <- reactiveValues()
-    userLog$n_first    <- 1
+    userLog <- reactiveValues()
+    userLog$n_first <- 1
     userLog$all_design <- list()
+    userLog$data_7 <- NULL
 
-    ##--------------------------------------
-    ##---------main-------------------------
-    ##--------------------------------------
+    ## --------------------------------------
+    ## ---------main-------------------------
+    ## --------------------------------------
     output$mainpage <- renderUI({
-       tab_main()
+        tab_main()
     })
 
-    ##--------------------------------------
+    ## --------------------------------------
     ##         DEMO 1: single trial
-    ##--------------------------------------
+    ## --------------------------------------
     observe({
-        if (is.null(input$inN))
+        if (is.null(input$inN)) {
             return(NULL)
+        }
 
         updateSliderInput(session, "inNfirst", max = input$inN)
     })
@@ -27,8 +28,9 @@ shinyServer(function(input, output, session) {
 
     output$pltArm <- renderPlotly({
         dta <- get_data_single()
-        if (is.null(dta))
+        if (is.null(dta)) {
             return(NULL)
+        }
 
         type <- input$rdoArmOpt
         if (is.null(type)) {
@@ -36,20 +38,22 @@ shinyServer(function(input, output, session) {
         }
 
         rst <- si_bd_plt_single(dta,
-                                type     = type,
-                                ##n_first  = userLog$n_first,
-                                n_first  = input$inNfirst,
-                                ref_line = c(input$inTrtMean, 0))
+            type     = type,
+            ## n_first  = userLog$n_first,
+            n_first  = input$inNfirst,
+            ref_line = c(input$inTrtMean, 0)
+        )
 
         ggplotly(rst)
     })
 
     output$pltDiff <- renderPlotly({
-        dta   <- get_data_single()
-        if (is.null(dta))
+        dta <- get_data_single()
+        if (is.null(dta)) {
             return(NULL)
+        }
 
-        type  <- input$rdoDiffOpt
+        type <- input$rdoDiffOpt
         if (is.null(type)) {
             type <- "difference"
         }
@@ -57,50 +61,59 @@ shinyServer(function(input, output, session) {
         ## rejection line
         ref_line <- NULL
         if (input$chkThresh) {
-            alpha    <- get_alpha()
+            alpha <- get_alpha()
             ref_line <- switch(type,
-                               zscore = qnorm(1 - alpha),
-                               pvalue = alpha)
+                zscore = qnorm(1 - alpha),
+                pvalue = alpha
+            )
         }
 
         rst <- si_bd_plt_single(dta,
-                                type     = type,
-                                n_first  = input$inNfirst,
-                                ## n_first  = userLog$n_first,
-                                col      = "red",
-                                ref_line = ref_line)
+            type     = type,
+            n_first  = input$inNfirst,
+            ## n_first  = userLog$n_first,
+            col      = "red",
+            ref_line = ref_line
+        )
 
         ggplotly(rst)
     })
 
-    ##--------------------------------------
+    ## --------------------------------------
     ##         DEMO 2: Rejection
-    ##--------------------------------------
+    ## --------------------------------------
 
     output$pltTest <- renderPlot({
         dta <- get_data_rej()
-        if (is.null(dta))
+        if (is.null(dta)) {
             return(NULL)
+        }
 
         si_bd_plt_rep(dta,
-                      sel  = get_sel(),
-                      type = input$rdoTestOpt)
+            sel  = get_sel(),
+            type = input$rdoTestOpt
+        )
     })
 
-    output$tblTest <- renderTable({
-        get_summary_rej()$rej_tbl
-    }, digits = 4)
+    output$tblTest <- renderTable(
+        {
+            get_summary_rej()$rej_tbl
+        },
+        digits = 4
+    )
 
     output$pltAlpha <- renderPlot({
         dta <- get_summary_rej()$rej
-        if (is.null(dta))
+        if (is.null(dta)) {
             return(NULL)
+        }
 
         max_y <- get_alpha_boundary()
-        rst   <- si_bd_plt_alpha(dta, alpha = input$inAlpha)
+        rst <- si_bd_plt_alpha(dta, alpha = input$inAlpha)
 
-        if (!is.null(max_y))
+        if (!is.null(max_y)) {
             rst <- rst + ylim(0, max_y * 1.05)
+        }
 
         rst
     })
@@ -110,20 +123,22 @@ shinyServer(function(input, output, session) {
         print(details)
     })
 
-    ##--------------------------------------
+    ## --------------------------------------
     ##         DEMO 3: Boundaries
-    ##--------------------------------------
+    ## --------------------------------------
 
     output$pltBds <- renderPlot({
-
         designs <- input$chkDesigns
-        if (is.null(designs))
+        if (is.null(designs)) {
             return(NULL)
+        }
 
-            si_bd_plt_bd(n_interim = input$inNInterim2,
-                         alpha     = input$inAlpha,
-                         designs   = designs,
-                         type      = input$rdoRpact)
+        si_bd_plt_bd(
+            n_interim = input$inNInterim2,
+            alpha = input$inAlpha,
+            designs = designs,
+            type = input$rdoRpact
+        )
     })
 
 
@@ -133,17 +148,22 @@ shinyServer(function(input, output, session) {
 
     output$pltASTest <- renderPlot({
         dta <- get_data_rej_as()
-        if (is.null(dta))
+        if (is.null(dta)) {
             return(NULL)
+        }
 
         si_bd_plt_rep(dta,
-                      sel  = get_sel(),
-                      type = "zscore")
+            sel  = get_sel(),
+            type = "zscore"
+        )
     })
 
-    output$tblASTest <- renderTable({
-        get_summary_rej_as()$rej
-    }, digits = 4)
+    output$tblASTest <- renderTable(
+        {
+            get_summary_rej_as()$rej
+        },
+        digits = 4
+    )
 
 
     output$txtASBd <- renderPrint({
@@ -154,26 +174,32 @@ shinyServer(function(input, output, session) {
     ## ---------------------------------------------------
     ##            DEMO 5: User Defined Design
     ## ---------------------------------------------------
-    output$tblDesn5 <- renderDataTable({
-        rst <- get_design_5()
+    output$tblDesn5 <- renderDataTable(
+        {
+            rst <- get_design_5()
 
-        if (is.null(rst))
-            return(NULL)
+            if (is.null(rst)) {
+                return(NULL)
+            }
 
-        rst <- rst %>%
-            select(-inx, -study_alpha, -study_power,
-                   -nominal_alpha_left) %>%
-            mutate(nominal_alpha    = 2 * nominal_alpha,
-                   ia_alpha_spent   = 2 * ia_alpha_spent,
-                   cumu_alpha_spent = 2 * cumu_alpha_spent) %>%
-            set_gsd_tbl()
+            rst <- rst %>%
+                select(
+                    -inx, -study_alpha, -study_power,
+                    -nominal_alpha_left
+                ) %>%
+                mutate(
+                    nominal_alpha = 2 * nominal_alpha,
+                    ia_alpha_spent = 2 * ia_alpha_spent,
+                    cumu_alpha_spent = 2 * cumu_alpha_spent
+                ) %>%
+                set_gsd_tbl()
 
-        rst
-
-    }, options = list(dom = 't'))
+            rst
+        },
+        options = list(dom = "t")
+    )
 
     output$pltout5 <- renderPlotly({
-
         rst <- get_design_plot_5()
 
         if (is.null(rst)) {
@@ -198,61 +224,106 @@ shinyServer(function(input, output, session) {
         choices <- unique(dta$Rejection2)
 
         checkboxGroupInput("inChkbox5",
-                           "",
-                           choices = choices,
-                           selected = choices)
+            "",
+            choices = choices,
+            selected = choices
+        )
     })
 
     ## ---------------------------------------------------
     ##            DEMO 6: User Defined Design
     ## ---------------------------------------------------
-    output$tblDesn6 <- renderDataTable({
-        rst <- userLog$all_design$design
+    output$tblDesn6 <- renderDataTable(
+        {
+            rst <- userLog$all_design$design
 
-        if (is.null(rst))
-            return(NULL)
+            if (is.null(rst)) {
+                return(NULL)
+            }
 
-        rst <- rst %>%
-            select(-inx, -study_alpha, -study_power,
-                   -nominal_alpha_left) %>%
-            set_gsd_tbl(pre_col = "Design")
+            rst <- rst %>%
+                select(
+                    -inx, -study_alpha, -study_power,
+                    -nominal_alpha_left
+                ) %>%
+                set_gsd_tbl(pre_col = "Design")
 
-        rst
-    }, options = list(dom = "t", pageLength = 100))
+            rst
+        },
+        options = list(dom = "t", pageLength = 100)
+    )
 
-    output$tblOut6 <- renderDataTable({
-        rst <- userLog$all_design$outcome
+    output$tblOut6 <- renderDataTable(
+        {
+            rst <- userLog$all_design$outcome
 
-        if (is.null(rst))
-            return(NULL)
+            if (is.null(rst)) {
+                return(NULL)
+            }
 
-        rst <- rst %>%
-            mutate(
-                across(
-                    c("expected_duration",
-                      "expected_samplesize",
-                      "saved_duration",
-                      "saved_sample",
-                      "power"),
-                    ~ format(round(.x, digits = 2),
-                             nsmall = 2)))
+            rst <- rst %>%
+                mutate(
+                    across(
+                        c(
+                            "expected_duration",
+                            "expected_samplesize",
+                            "saved_duration",
+                            "saved_sample",
+                            "power"
+                        ),
+                        ~ format(round(.x, digits = 2),
+                            nsmall = 2
+                        )
+                    )
+                )
 
-        colnames(rst) <- c("Design",
-                           "Expected Duration (Months)",
-                           "Expected Sample Size",
-                           "Expected Saved Duration (%)",
-                           "Expected Saved Sample (%)",
-                           "Power")
+            colnames(rst) <- c(
+                "Design",
+                "Expected Duration (Months)",
+                "Expected Sample Size",
+                "Expected Saved Duration (%)",
+                "Expected Saved Sample (%)",
+                "Power"
+            )
 
-        rst
-    }, options = list(dom = "t"))
+            rst
+        },
+        options = list(dom = "t")
+    )
 
     output$pltout6 <- renderPlotly({
         rst <- get_design_plot_6()
-        if (is.null(rst))
+        if (is.null(rst)) {
             return(NULL)
+        }
 
         ggplotly(rst, tooltip = "text")
+    })
+
+    ## ---------------------------------------------------
+    ##            DEMO 7
+    ## ---------------------------------------------------
+
+    output$pltout7Pvals <- renderPlot({
+        get_plt7_pvals()
+    })
+
+    output$pltout7Pairs <- renderPlot({
+        dta <- userLog$data_7
+
+        if (is.null(dta))
+            return(NULL)
+
+        n_ana <- (ncol(dta) - 1) / 2
+        if (n_ana <= 1)
+            return(NULL)
+
+
+        dta <- dta[,
+                   paste("pval", seq_len(n_ana), sep = "")]
+
+        ggpairs(dta,
+                diag = list(continuous = "blank"))
     })
 
 })
