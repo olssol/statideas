@@ -57,7 +57,8 @@ get_data_all <- reactive({
     rst <- si_bd_simu_all(n_rep,
                           n_tot    = n_tot,
                           trt_mean = trt_mean,
-                          n_cores  = parallel::detectCores() - 1)
+                          n_cores  = 1)
+                          ## n_cores  = parallel::detectCores() - 2)
 
     rst
 })
@@ -244,7 +245,7 @@ get_design_plot_data_5 <- reactive({
 
     sig  <- stb_tl_gsd_cov(info_fracs)
     m    <- stb_tl_gsd_mean(info_fracs = info_fracs,
-                            alpha      = alpha,
+                            alpha      = alpha2,
                             power      = power)
 
     nsmp <- input$inNtrial
@@ -285,12 +286,13 @@ get_design_plot_data_5 <- reactive({
                      smps[, 2] > boundary[2] &
                      smps[, 2] < alpha2)
 
-        col2[inx] <- "Fail to Reject With IA"
-        col[inx]  <- paste("Fail to Reject With IA (n = ",
-                          length(inx), ", % = ",
-                          round(length(inx) / nsmp, 3),
-                          ")",
-                          sep = "")
+
+        ## col2[inx] <- "Fail to Reject With IA"
+        ## col[inx]  <- paste("Fail to Reject With IA (n = ",
+                          ## length(inx), ", % = ",
+                          ## round(length(inx) / nsmp, 3),
+                          ## ")",
+                          ## sep = "")
 
         inx <- which(smps[, 1] > boundary[1] &
                      smps[, 2] < boundary[2])
@@ -315,12 +317,13 @@ get_design_plot_data_5 <- reactive({
         inx <- which(smps[, 1] < boundary[1] &
                      smps[, 2] > boundary[2] &
                      smps[, 2] < alpha2)
-        col2[inx] <- "Rejected: Now at IA"
-        col[inx] <- paste("Rejected: Now at IA (n = ",
-                          length(inx), ", % = ",
-                          round(length(inx) / nsmp, 3),
-                          ")",
-                          sep = "")
+
+        ## col2[inx] <- "Rejected: Now at IA"
+        ## col[inx] <- paste("Rejected: Now at IA (n = ",
+        ##                   length(inx), ", % = ",
+        ##                   round(length(inx) / nsmp, 3),
+        ##                   ")",
+        ##                   sep = "")
     } else {
         inx <- which(smps[, 1] < boundary[1] &
                      smps[, 2] > alpha2 - boundary[1])
@@ -423,43 +426,95 @@ get_design_plot_5 <- reactive({
                                       "Rejected at Final When No IA" = "yellow"
                                       ))
 
+    chkHlIa        <- "IA"         %in% input$inChkbox6
+    chkHlFaNaive   <- "FA naive"   %in% input$inChkbox6
+    chkHlFaCorrect <- "FA correct" %in% input$inChkbox6
+    chkHlFaAlpha   <- "FA alpha"   %in% input$inChkbox6
+
     if ("fia" == without_ia) {
-        rst <- rst +
-            geom_vline(xintercept = boundary[1],
+        if (chkHlIa)
+            rst <- rst +
+                geom_vline(xintercept = boundary[1],
+                           lty = 2,
+                           lwd = 1,
+                           col = "red") +
+                geom_point(data = data.frame(x = boundary[1], y = 0),
+                           aes(x = x, y = y, text = round(boundary[1], 3)),
+                           color = "red", size = 3, alpha = 0)
+
+        if (chkHlFaCorrect)
+            rst <- rst +
+                geom_hline(yintercept = boundary[2],
                        lty = 2,
                        lwd = 1,
                        col = "red") +
-            geom_hline(yintercept = boundary[2],
-                       lty = 2,
-                       lwd = 1,
-                       col = "red") +
-            geom_hline(yintercept = alpha2 - boundary[1],
-                       lty = 2,
-                       lwd = 1,
-                       col = "gray")
+                geom_point(data = data.frame(x = boundary[2], y = 0),
+                           aes(x = x, y = y, text = round(boundary[2], 3)),
+                           color = "red", size = 3, alpha = 0)
+
+        if (chkHlFaNaive)
+            rst <- rst +
+                geom_hline(yintercept = alpha2 - boundary[1],
+                           lty = 2,
+                           lwd = 1,
+                           col = "blue") +
+                geom_point(data = data.frame(x = 0,
+                                             y = alpha2 - boundary[1]),
+                           aes(x    = x,
+                               y    = y,
+                               text = round(alpha2 - boundary[1], 3)),
+                           color = "blue", size = 3, alpha = 0)
+
     } else if ("ia" == without_ia) {
-        rst <- rst +
-            geom_vline(xintercept = boundary[1],
-                       lty = 2,
-                       lwd = 1,
-                       col = "red")
+        if (chkHlIa)
+            rst <- rst +
+                geom_vline(xintercept = boundary[1],
+                           lty = 2,
+                           lwd = 1,
+                           col = "red") +
+                geom_point(data = data.frame(x = boundary[1],
+                                             y = 0),
+                           aes(x = x, y = y, text = round(boundary[1], 3)),
+                           color = "red", size = 3, alpha = 0)
+
     } else if ("nfia" == without_ia) {
-        rst <- rst +
-            geom_vline(xintercept = boundary[1],
-                       lty = 2,
-                       lwd = 1,
-                       col = "red") +
-        geom_hline(yintercept = alpha2 - boundary[1],
-                   lty = 2,
-                   lwd = 1,
-                   col = "gray")
+        if (chkHlIa)
+            rst <- rst +
+                geom_vline(xintercept = boundary[1],
+                           lty = 2,
+                           lwd = 1,
+                           col = "red") +
+                geom_point(data = data.frame(x = boundary[1],
+                                             y = 0),
+                           aes(x    = x,
+                               y    = y,
+                               text = round(boundary[1], 3)),
+                           color = "red", size = 3, alpha = 0)
+
+        if (chkHlFaNaive)
+            rst <- rst +
+                geom_hline(yintercept = alpha2 - boundary[1],
+                           lty = 2,
+                           lwd = 1,
+                           col = "blue") +
+                geom_point(data = data.frame(x = 0,
+                                             y = alpha2 - boundary[1]),
+                           aes(x    = x,
+                               y    = y,
+                               text = round(alpha2 - boundary[1], 3)),
+                           color = "blue", size = 3, alpha = 0)
     }
 
-    rst <- rst +
-        geom_hline(yintercept = alpha2,
-                   lty = 2,
-                   lwd = 1,
-                   col = "black")
+    if (chkHlFaAlpha)
+        rst <- rst +
+            geom_hline(yintercept = alpha2,
+                       lty = 2,
+                       lwd = 1,
+                       col = "black") +
+            geom_point(data = data.frame(x = 0,
+                                         y = alpha2),
+                       aes(x = x, y = y, text = round(alpha2, 3)),
+                       color = "black", size = 3, alpha = 0)
 
     rst
 })
@@ -681,8 +736,8 @@ observeEvent(input$btnGen7, {
     n_ana      <- length(info_fracs)
     userLog$data_7 <- stb_tl_gsd_simu(
         info_fracs = info_fracs,
-        n = input$inRep7,
-        theta = -input$inEff7
+        n          = input$inRep7,
+        theta      = -input$inEff7
     )
 })
 

@@ -6,6 +6,9 @@
 \usage{
 c_mtp_step(mat_g, weights, h_ind, p_values, alpha)
 }
+\value{
+Single step MTP result
+}
 \description{
 A single step in the multiple testing following the graph
 }

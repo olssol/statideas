@@ -206,6 +206,24 @@ tab_basic <- function() {
              fluidRow(
                  column(3,
                         wellPanel(
+                            h4("Observed Data"),
+                            numericInput(
+                                "inObsY",
+                                "Number of Responders",
+                                value = 6, min = 0, step = 1),
+                            numericInput(
+                                "inObsN",
+                                "Total Number of Patients",
+                                value = 20, min = 0, step = 5),
+                            h4("Frequentist Results"),
+                            numericInput(
+                                "inH0",
+                                "Null Hypothesis (Greater Than)",
+                                value = 0.5,
+                                min = 0, max = 1, step = 0.05),
+                            htmlOutput("outFreq")),
+
+                        wellPanel(
                             h4("Prior Elicitation"),
                             sliderInput(
                                 "inPriRng",
@@ -219,17 +237,6 @@ tab_basic <- function() {
                                 value = 80,
                                 min   = 0, max = 95, step = 5),
 
-                            h4("Observed Data"),
-                            numericInput(
-                                "inObsY",
-                                "Number of Responders",
-                                value = 6, min = 0, step = 1),
-                            numericInput(
-                                "inObsN",
-                                "Total Number of Patients",
-                                value = 20, min = 0, step = 5)),
-
-                        wellPanel(
                             h4("Bayesian Results"),
                             numericInput(
                                 "inCredLevel",
@@ -239,33 +246,24 @@ tab_basic <- function() {
                             textInput("inQuants",
                                       "Quantiles (Sep by Comma)",
                                       value = "25, 50, 75"),
-                            htmlOutput("outBayes")),
-
-                        wellPanel(
-                            h4("Frequentist Results"),
-                            numericInput(
-                                "inH0",
-                                "Null Hypothesis (Greater Than)",
-                                value = 0.5,
-                                min = 0, max = 1, step = 0.05),
-                            htmlOutput("outFreq"))),
+                            htmlOutput("outBayes"))),
                  column(9,
+                        fluidRow(
+                            column(6,
+                                   h4("Observed Data I"),
+                                   plotOutput("pltObsFreq")),
+                            column(6,
+                                   h4("Observed Data II"),
+                                   plotOutput("pltObs",
+                                              click    = "obs_click",
+                                              dblclick = "obs_dblclick"))
+                        ),
                         fluidRow(
                             column(6,
                                    h4("Prior Distribution of Response Rate"),
                                    plotOutput("pltPri",
                                               click    = "pri_click",
                                               dblclick = "pri_dblclick")),
-                            column(6,
-                                   h4("Observed Data I"),
-                                   plotOutput("pltObsFreq"))
-                        ),
-                        fluidRow(
-                            column(6,
-                                   h4("Observed Data II"),
-                                   plotOutput("pltObs",
-                                              click    = "obs_click",
-                                              dblclick = "obs_dblclick")),
                             column(6,
                                    h4("Posterior Distribution of Response Rate"),
                                    plotOutput("pltPost",

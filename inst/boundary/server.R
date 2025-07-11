@@ -88,7 +88,6 @@ shinyServer(function(input, output, session) {
         if (is.null(dta)) {
             return(NULL)
         }
-
         si_bd_plt_rep(dta,
             sel  = get_sel(),
             type = input$rdoTestOpt
@@ -224,7 +223,7 @@ shinyServer(function(input, output, session) {
         choices <- unique(dta$Rejection2)
 
         checkboxGroupInput("inChkbox5",
-            "",
+            "Highlight Regions",
             choices = choices,
             selected = choices
         )
@@ -315,7 +314,7 @@ shinyServer(function(input, output, session) {
             return(NULL)
 
         n_ana <- (ncol(dta) - 1) / 2
-        if (n_ana <= 1)
+        if (n_ana < 1)
             return(NULL)
 
 

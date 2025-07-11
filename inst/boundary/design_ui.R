@@ -11,12 +11,14 @@ tab_main <- function() {
     tabsetPanel(type = "pills",
                 id   = "mainpanel",
                 tab_slides(),
+                ## An RCT
+                tab_demo_1(),
+                ## An RCT with IA
                 tab_demo_7(),
                 tab_demo_5(),
-                tab_demo_3(),
                 tab_demo_6(),
-                tab_demo_4(),
-                tab_demo_1(),
+                tab_demo_3(),
+                ## tab_demo_4(),
                 tab_demo_2()
                 )
 }
@@ -30,7 +32,7 @@ tab_slides <- function() {
 }
 
 tab_demo_1 <- function() {
-    tabPanel("Demo I",
+    tabPanel("An RCT",
              fluidRow(
                  column(4,
                         numericInput("inN",
@@ -88,7 +90,7 @@ tab_demo_1 <- function() {
 }
 
 tab_demo_2 <- function() {
-    tabPanel("Demo II",
+    tabPanel("Alpha Spending Functions (Demo)",
              fluidRow(
                  column(4,
                         numericInput("inRep",
@@ -190,15 +192,15 @@ tab_demo_4 <- function() {
 }
 
 tab_demo_5 <- function() {
-    tabPanel("Alpha Spent At IA",
+    tabPanel("Alpha Spending",
 
-             msg_box("In the Demo, we consider there is only one interim analysis.
-                      We illustrate the following points: <ol>
-                      <li>What is alpha spending?</li>
-                      <li>Why doesn't 1+1 equal 2?</li>
-                      <li>Why does the same alpha spent at different time cost differently?</li>
-                      </ol>",
-                     type = "info"),
+             ## msg_box("In the Demo, we consider there is only one interim analysis.
+             ##          We illustrate the following points: <ol>
+             ##          <li>What is alpha spending?</li>
+             ##          <li>Why doesn't 1+1 equal 2?</li>
+             ##          <li>Why does the same alpha spent at different time cost differently?</li>
+             ##          </ol>",
+             ##         type = "info"),
 
              msg_box("Remark: The same alpha spent at an earlier IA has a bigger
                      impact at the FA.",
@@ -246,13 +248,13 @@ tab_demo_5 <- function() {
                          wellPanel(
                              fluidRow(
                                  column(
-                                     3,
+                                     2,
                                      numericInput("inNtrial",
                                                   "Number of Trials",
                                                   value = 1000,
                                                   min   = 100)),
                                  column(
-                                     3,
+                                     2,
                                      radioButtons(
                                          "inRdoAna5",
                                          "",
@@ -265,13 +267,26 @@ tab_demo_5 <- function() {
 
                                  column(3,
                                         uiOutput("uiChkbox5")),
-                                 column(3,
+
+                                 column(2,
+                                        checkboxGroupInput(
+                                            "inChkbox6",
+                                            "Highlight Thresholds",
+                                            choices = c("IA",
+                                                        "FA naive",
+                                                        "FA correct",
+                                                        "FA alpha"),
+                                            selected = "FA alpha"
+                                        )),
+
+                                 column(2,
                                         radioButtons(
                                             "inRdo5",
                                             "",
-                                            choices = c("Under Null" = "type1",
-                                                        "Power"      = "power" )
-                                        ))
+                                            choices = c(
+                                                "Under Null" = "type1",
+                                                "Power"      = "power" ))
+                                        )
                              ),
 
                              plotlyOutput("pltout5", height = "600px"),
@@ -303,14 +318,23 @@ tab_demo_5 <- function() {
 
                          plotlyOutput("pltoutCurve5", height = "600px"))
                  ))
-)}
+             )}
 
 tab_demo_6 <- function() {
     tabPanel("Design Studies",
 
-             msg_box("In the Demo, we illustrate how different alpha spending
+             msg_box("In the demonstration, we provide a detailed comparison
+                      of various alpha spending functions by visually and analytically
+                      illustrating how each function allocates the overall type I
+                      error rate across interim analyses in a sequential testing
+                      framework. This allows viewers to understand the distinct
+                      characteristics and practical implications of each alpha
+                      spending approach, such as how quickly or conservatively
+                      the significance level is spent over time, and how this affects
+                      the flexibility and statistical power of interim analyses.
+                      In the Demo, we illustrate how different alpha spending
                       functions differ from each other.",
-                      type = "info"),
+                     type = "info"),
 
              wellPanel(
                  h4("Specify Design Parameters"),
@@ -389,17 +413,7 @@ tab_demo_6 <- function() {
              wellPanel(
                  tabsetPanel(
                      tabPanel(
-                         "Study Design",
-                         wellPanel(DTOutput("tblDesn6"))
-                     ),
-
-                     tabPanel(
-                         "Resource Saved",
-                         wellPanel(DTOutput("tblOut6"))
-                     ),
-
-                     tabPanel(
-                         "Illustration",
+                         "Design (Illustration)",
                          wellPanel(
                              radioButtons(
                                  "inRdo6",
@@ -413,13 +427,23 @@ tab_demo_6 <- function() {
                                  )),
                              plotlyOutput("pltout6", height = "600px")
                          )
-                     )
-             )))
+                     ),
+
+                     tabPanel(
+                         "Design (Details)",
+                         wellPanel(DTOutput("tblDesn6"))
+                     ),
+
+                     tabPanel(
+                         "Resource Saved",
+                         wellPanel(DTOutput("tblOut6"))
+                     ))
+             ))
 }
 
 tab_demo_7 <- function() {
     tabPanel(
-        "An RCT with IA",
+        "Interim Analysis (IA)",
         fluidRow(
             column(
                 4,

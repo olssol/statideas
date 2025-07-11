@@ -42,7 +42,7 @@ c_mtp <- function(p_values, alphas, mat_g) {
 #'
 #'
 #'
-#' @return
+#' @return Single step MTP result
 #'
 #' @export
 c_mtp_step <- function(mat_g, weights, h_ind, p_values, alpha) {

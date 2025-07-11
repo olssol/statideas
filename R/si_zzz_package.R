@@ -1,7 +1,7 @@
 #' The 'statideas' package.
 #'
-#' @docType package
-#' @name    statideas-package
+#' @keywords internal
+#' @name    statidea_PACKAGE
 #' @aliases statideas
 #' @useDynLib statidea, .registration = TRUE
 #'

@@ -2,6 +2,10 @@ library(shinythemes)
 library(plotly)
 library(statidea)
 library(DT)
+library(GGally)
+library(gsDesign)
+library(rpact)
+library(mvtnorm)
 
 shinyUI(
     fluidPage(theme = shinytheme("cosmo"),

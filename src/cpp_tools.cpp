@@ -196,7 +196,7 @@ IntegerMatrix c_mtp(NumericMatrix p_values, NumericVector alphas,
 //'
 //'
 //'
-//' @return
+//' @return Single step MTP result
 //'
 //' @export
 // [[Rcpp::export]]

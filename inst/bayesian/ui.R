@@ -41,10 +41,7 @@ shinyUI(
 
               ##foot
               withTags({
-                  div(class = "cfooter",
-                      "A",
-                      "Statistical Innovation",
-                      "Project")
+                  div(class = "cfooter", "A Statistical Innovation Project")
               })
               )
 )
