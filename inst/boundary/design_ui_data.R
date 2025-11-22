@@ -448,7 +448,7 @@ get_design_plot_5 <- reactive({
                        lty = 2,
                        lwd = 1,
                        col = "red") +
-                geom_point(data = data.frame(x = boundary[2], y = 0),
+                geom_point(data = data.frame(y = boundary[2], x = 0),
                            aes(x = x, y = y, text = round(boundary[2], 3)),
                            color = "red", size = 3, alpha = 0)
 

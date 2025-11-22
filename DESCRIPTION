@@ -1,11 +1,15 @@
 Package: statidea
 Title: Statistics Ideas Through Interactive Apps
 Version: 3.0
-Authors@R:
+Authors@R: c(
     person(given = "Chenguang",
            family = "Wang",
            role = c("aut", "cre"),
-           email = "chenguang.wang.0517@gmail.com")
+           email = "chenguang.wang.0517@gmail.com"),
+    person(given = "Jeen",
+           family = "Liu",
+           role = "aut",
+           email = "jeen.j.liu@gmail.com"))
 Maintainer: Chenguang Wang <chenguang.wang.0517@gmail.com>
 Description: Demonstrate statistics ideas and concepts through interactive Shiny
      applications.
