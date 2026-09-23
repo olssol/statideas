@@ -1,18 +1,18 @@
 data {
   int<lower  = 1>  ns;
-  int<lower  = 0>  y[ns];
-  int<lower  = 0>  n[ns];
+  array[ns] int<lower = 0>  y;
+  array[ns] int<lower = 0>  n;
   real<lower = 0>  pri_sig;
 }
 
 parameters {
-  real            beta[ns];
+  array[ns] real  beta;
   real            mu_beta;
   real<lower = 0> sigma;
 }
 
 transformed parameters {
-  real<lower = 0, upper = 1> theta[ns];
+  array[ns] real<lower = 0, upper = 1> theta;
   for (i in 1:ns) {
     theta[i] = exp(beta[i]) / (1 + exp(beta[i]));
   }
