@@ -2,11 +2,11 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 c_test <- function(test) {
-    .Call(`_statidea_c_test`, test)
+    .Call(`_statideas_c_test`, test)
 }
 
 c_two_arm_diff <- function(dat) {
-    .Call(`_statidea_c_two_arm_diff`, dat)
+    .Call(`_statideas_c_two_arm_diff`, dat)
 }
 
 #' Multiple testing following the graph
@@ -21,7 +21,7 @@ c_two_arm_diff <- function(dat) {
 #'
 #' @export
 c_mtp_single <- function(p_values, alphas, mat_g, log = FALSE) {
-    .Call(`_statidea_c_mtp_single`, p_values, alphas, mat_g, log)
+    .Call(`_statideas_c_mtp_single`, p_values, alphas, mat_g, log)
 }
 
 #' Multiple testing following the graph
@@ -35,7 +35,7 @@ c_mtp_single <- function(p_values, alphas, mat_g, log = FALSE) {
 #'
 #' @export
 c_mtp <- function(p_values, alphas, mat_g) {
-    .Call(`_statidea_c_mtp`, p_values, alphas, mat_g)
+    .Call(`_statideas_c_mtp`, p_values, alphas, mat_g)
 }
 
 #' A single step in the multiple testing following the graph
@@ -46,6 +46,6 @@ c_mtp <- function(p_values, alphas, mat_g) {
 #'
 #' @export
 c_mtp_step <- function(mat_g, weights, h_ind, p_values, alpha) {
-    .Call(`_statidea_c_mtp_step`, mat_g, weights, h_ind, p_values, alpha)
+    .Call(`_statideas_c_mtp_step`, mat_g, weights, h_ind, p_values, alpha)
 }
 

@@ -9,7 +9,7 @@ library(ggplot2)
 library(shiny)
 
 require(plotly)
-require(statidea)
+require(statideas)
 
 
 shinyServer(function(input, output, session) {

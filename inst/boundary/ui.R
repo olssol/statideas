@@ -1,6 +1,6 @@
 library(shinythemes)
 library(plotly)
-library(statidea)
+library(statideas)
 library(DT)
 library(GGally)
 library(gsDesign)

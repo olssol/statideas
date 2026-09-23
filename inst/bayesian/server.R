@@ -1,6 +1,6 @@
 options(shiny.maxRequestSize = 200*1024^2)
 require(plotly)
-require(statidea)
+require(statideas)
 
 shinyServer(function(input, output, session) {
 

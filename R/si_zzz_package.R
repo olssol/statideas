@@ -1,9 +1,9 @@
 #' The 'statideas' package.
 #'
 #' @keywords internal
-#' @name    statidea_PACKAGE
+#' @name    statideas_PACKAGE
 #' @aliases statideas
-#' @useDynLib statidea, .registration = TRUE
+#' @useDynLib statideas, .registration = TRUE
 #'
 #' @import methods
 #' @import stats

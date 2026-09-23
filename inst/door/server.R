@@ -10,7 +10,7 @@ library(shiny)
 library(shinyjs)
 
 require(plotly)
-require(statidea)
+require(statideas)
 
 
 shinyServer(function(input, output, session) {

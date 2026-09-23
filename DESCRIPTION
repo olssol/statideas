@@ -1,4 +1,4 @@
-Package: statidea
+Package: statideas
 Title: Statistics Ideas Through Interactive Apps
 Version: 3.0
 Authors@R: c(
@@ -41,7 +41,6 @@ Encoding: UTF-8
 LazyData: true
 NeedsCompilation: yes
 SystemRequirements: GNU make
-RoxygenNote: 7.3.2
 Suggests:
     knitr,
     shiny,
@@ -49,3 +48,4 @@ Suggests:
     pander,
     xtable
 VignetteBuilder: knitr
+Config/roxygen2/version: 8.1.0

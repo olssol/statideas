@@ -4,10 +4,10 @@
 \alias{si_shiny}
 \title{Run Web-Based application}
 \usage{
-si_shiny(appname = "boundary", pkgname = "statidea")
+si_shiny(appname = "boundary", pkgname = "statideas")
 }
 \description{
-Call Shiny to run \code{statidea} as a web-based application.
+Call Shiny to run \code{statideas} as a web-based application.
 }
 \details{
 A web browser will be brought up for users to access the GUI

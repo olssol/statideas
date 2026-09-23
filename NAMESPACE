@@ -67,47 +67,57 @@ import(methods)
 import(stats)
 importFrom(GGally,ggpairs)
 importFrom(data.table,rbindlist)
-importFrom(dplyr,"%>%")
-importFrom(dplyr,arrange)
-importFrom(dplyr,count)
-importFrom(dplyr,distinct)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,group_by_)
-importFrom(dplyr,if_else)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,mutate_if)
-importFrom(dplyr,n)
-importFrom(dplyr,rename)
-importFrom(dplyr,rowwise)
-importFrom(dplyr,select)
-importFrom(dplyr,slice_head)
-importFrom(dplyr,summarize)
-importFrom(dplyr,ungroup)
+importFrom(dplyr,
+  "%>%",
+  arrange,
+  count,
+  distinct,
+  filter,
+  group_by,
+  group_by_,
+  if_else,
+  left_join,
+  mutate,
+  mutate_if,
+  n,
+  rename,
+  rowwise,
+  select,
+  slice_head,
+  summarize,
+  ungroup
+)
 importFrom(grDevices,colors)
-importFrom(graphics,arrows)
-importFrom(graphics,axis)
-importFrom(graphics,box)
-importFrom(graphics,grid)
-importFrom(graphics,legend)
-importFrom(graphics,lines)
-importFrom(graphics,par)
-importFrom(graphics,plot)
-importFrom(graphics,points)
-importFrom(graphics,rect)
-importFrom(graphics,text)
-importFrom(gsDesign,gsBoundSummary)
-importFrom(gsDesign,gsDesign)
-importFrom(gsDesign,sfPoints)
-importFrom(gsDesign,sfPower)
-importFrom(mvtnorm,dmvnorm)
-importFrom(mvtnorm,pmvnorm)
-importFrom(mvtnorm,rmvnorm)
+importFrom(graphics,
+  arrows,
+  axis,
+  box,
+  grid,
+  legend,
+  lines,
+  par,
+  plot,
+  points,
+  rect,
+  text
+)
+importFrom(gsDesign,
+  gsBoundSummary,
+  gsDesign,
+  sfPoints,
+  sfPower
+)
+importFrom(mvtnorm,
+  dmvnorm,
+  pmvnorm,
+  rmvnorm
+)
 importFrom(parallel,detectCores)
-importFrom(rpact,getDesignGroupSequential)
-importFrom(rpact,getDesignSet)
+importFrom(rpact,
+  getDesignGroupSequential,
+  getDesignSet
+)
 importFrom(rstan,sampling)
 importFrom(tidyr,gather)
 importFrom(utils,as.roman)
-useDynLib(statidea, .registration = TRUE)
+useDynLib(statideas, .registration = TRUE)

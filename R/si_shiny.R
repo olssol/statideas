@@ -1,6 +1,6 @@
 #' Run Web-Based application
 #'
-#' Call Shiny to run \code{statidea} as a web-based application.
+#' Call Shiny to run \code{statideas} as a web-based application.
 #'
 #' @details
 #'
@@ -9,7 +9,7 @@
 #'
 #' @export
 #'
-si_shiny <- function(appname = "boundary", pkgname = "statidea") {
+si_shiny <- function(appname = "boundary", pkgname = "statideas") {
     req.pkgs        <- c("shiny", "shinythemes", "DT",
                          "knitr", "rmarkdown", "pander");
     chk.uninstalled <- sapply(req.pkgs,
@@ -32,9 +32,9 @@ si_shiny <- function(appname = "boundary", pkgname = "statidea") {
         stop(msg, call. = FALSE);
     }
 
-    appDir <- system.file(appname, package = "statidea")
+    appDir <- system.file(appname, package = "statideas")
     if (appDir == "") {
-        stop("Could not find Shiny directory. Try re-installing `statidea`.",
+        stop("Could not find Shiny directory. Try re-installing `statideas`.",
              call. = FALSE)
     }
 
